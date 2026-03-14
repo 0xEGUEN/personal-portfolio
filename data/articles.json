@@ -1,0 +1,80 @@
+[
+  {
+    "id": 1,
+    "title": "Getting Started with Web Development",
+    "slug": "getting-started-with-web-development",
+    "excerpt": "Learn the fundamentals of web development and start your journey as a developer. We'll cover HTML, CSS, and JavaScript basics.",
+    "content": "...",
+    "category": "Tutorial",
+    "date": "2024-03-10",
+    "readTime": "8 min",
+    "image": "assets/blog1.jpg",
+    "author": "Adwa Fattur Rahman",
+    "tags": ["Web", "Beginner", "CSS", "HTML"]
+  },
+  {
+    "id": 2,
+    "title": "CSS Grid vs Flexbox: Which One to Use?",
+    "slug": "css-grid-vs-flexbox",
+    "excerpt": "A comprehensive guide comparing CSS Grid and Flexbox layouts. Build responsive designs with confidence.",
+    "content": "...",
+    "category": "Tips",
+    "date": "2024-03-05",
+    "readTime": "6 min",
+    "image": "assets/blog2.jpg",
+    "author": "Adwa Fattur Rahman",
+    "tags": ["CSS", "Layout", "Design"]
+  },
+  {
+    "id": 3,
+    "title": "JavaScript Async/Await Explained",
+    "slug": "javascript-async-await",
+    "excerpt": "Master asynchronous programming in JavaScript using async/await. No more callback hell!",
+    "content": "...",
+    "category": "Tutorial",
+    "date": "2024-03-01",
+    "readTime": "10 min",
+    "image": "assets/blog3.jpg",
+    "author": "Adwa Fattur Rahman",
+    "tags": ["JavaScript", "Async", "Performance"]
+  },
+  {
+    "id": 4,
+    "title": "The Future of Web Development in 2024",
+    "slug": "future-of-web-development-2024",
+    "excerpt": "Exploring the latest trends and technologies that will shape web development this year.",
+    "content": "...",
+    "category": "News",
+    "date": "2024-02-28",
+    "readTime": "7 min",
+    "image": "assets/blog4.jpg",
+    "author": "Adwa Fattur Rahman",
+    "tags": ["Trends", "Technology", "Future"]
+  },
+  {
+    "id": 5,
+    "title": "React Hooks: A Comprehensive Guide",
+    "slug": "react-hooks-guide",
+    "excerpt": "Understand React Hooks and how to use them to build better functional components.",
+    "content": "...",
+    "category": "Tutorial",
+    "date": "2024-02-20",
+    "readTime": "12 min",
+    "image": "assets/blog5.jpg",
+    "author": "Adwa Fattur Rahman",
+    "tags": ["React", "JavaScript", "Frontend"]
+  },
+  {
+    "id": 6,
+    "title": "Web Performance Optimization Tips",
+    "slug": "web-performance-tips",
+    "excerpt": "Learn practical techniques to optimize your website's performance and improve user experience.",
+    "content": "...",
+    "category": "Tips",
+    "date": "2024-02-15",
+    "readTime": "9 min",
+    "image": "assets/blog6.jpg",
+    "author": "Adwa Fattur Rahman",
+    "tags": ["Performance", "Optimization", "UX"]
+  }
+]

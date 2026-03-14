@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 Not Found — Adwa Fattur Rahman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inconsolata:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@400,0&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .error-container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .error-code {
+            font-size: clamp(60px, 15vw, 200px);
+            font-weight: 700;
+            background: linear-gradient(135deg, #4a9eff 0%, #d9e1c5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            line-height: 1;
+        }
+        
+        .error-message {
+            font-size: 24px;
+            font-family: var(--font-serif);
+            margin: 20px 0 10px;
+            color: #ffffff;
+        }
+        
+        .error-description {
+            font-size: 16px;
+            color: #b0b0b0;
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+        
+        .error-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Header -->
+        <header class="navbar" id="navbar">
+            <div class="containerbar">
+                <a class="brand" href="index.html">
+                    <span class="logo-icon"><span class="material-symbols-outlined" style="font-size:18px">code</span></span>
+                    <span>Adwa Fattur Rahman</span>
+                </a>
+                <nav class="nav-links" id="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+                <div class="nav-right">
+                    <a class="nav-cta" href="contact.html">Get In Touch</a>
+                    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="error-container">
+                <h1 class="error-code">404</h1>
+                <h2 class="error-message">Page Not Found</h2>
+                <p class="error-description">Sorry, the page you're looking for doesn't exist. It might have been moved or deleted.</p>
+                
+                <div class="error-buttons">
+                    <a href="index.html" class="btn btn-primary">
+                        <span class="material-symbols-outlined">home</span>
+                        Go Home
+                    </a>
+                    <a href="gallery.html" class="btn btn-outline">
+                        <span class="material-symbols-outlined">image</span>
+                        View Portfolio
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-inner">
+                    <div>
+                        <div class="footer-brand">Adwa Fattur Rahman</div>
+                        <p class="footer-desc">Full-stack developer crafting digital experiences with clarity, minimal design, and reliable delivery.</p>
+                        <div class="footer-social">
+                            <a href="https://linkedin.com" aria-label="LinkedIn">Li</a>
+                            <a href="https://github.com" aria-label="GitHub">Gh</a>
+                            <a href="https://twitter.com" aria-label="Twitter">Tw</a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Pages</h4>
+                        <a href="index.html">Home</a>
+                        <a href="about.html">About</a>
+                        <a href="gallery.html">Gallery</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Services</h4>
+                        <a href="#">Web Development</a>
+                        <a href="#">API Development</a>
+                        <a href="#">Performance</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Contact</h4>
+                        <a href="mailto:adwarahmant@gmail.com">adwarahmant@gmail.com</a>
+                        <a href="tel:+62878622201312">0878-6220-1312</a>
+                        <a href="#">Semarang, Ungaran, Jawa Tengah</a>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <span>&copy; 2026 Adwa Fattur Rahman. All rights reserved.</span>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-glow" id="cursor-glow"></div>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>

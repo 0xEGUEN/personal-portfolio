@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "title": "E-Commerce Platform",
+    "slug": "ecommerce-platform",
+    "description": "A full-featured e-commerce platform built with React and Node.js. Complete with product catalog, shopping cart, and payment integration.",
+    "image": "assets/project1.jpg",
+    "category": "web",
+    "tags": ["React", "Node.js", "MongoDB", "Stripe"],
+    "link": "#",
+    "year": 2024
+  },
+  {
+    "id": 2,
+    "title": "Mobile Weather App",
+    "slug": "mobile-weather-app",
+    "description": "A beautiful weather application for iOS and Android. Real-time weather updates, forecasts, and location-based features.",
+    "image": "assets/project2.jpg",
+    "category": "mobile",
+    "tags": ["React Native", "API", "Mobile"],
+    "link": "#",
+    "year": 2024
+  },
+  {
+    "id": 3,
+    "title": "Design System UI Kit",
+    "slug": "design-system-ui",
+    "description": "Comprehensive design system and UI component library for modern web applications. Fully documented and open source.",
+    "image": "assets/project3.jpg",
+    "category": "design",
+    "tags": ["Design System", "UI", "Figma", "CSS"],
+    "link": "#",
+    "year": 2023
+  },
+  {
+    "id": 4,
+    "title": "RESTful API Server",
+    "slug": "restful-api-server",
+    "description": "Robust backend API server with authentication, authorization, and database management. Built with Express.js and PostgreSQL.",
+    "image": "assets/project4.jpg",
+    "category": "backend",
+    "tags": ["Node.js", "Express", "PostgreSQL", "REST"],
+    "link": "#",
+    "year": 2023
+  },
+  {
+    "id": 5,
+    "title": "Portfolio Website",
+    "slug": "portfolio-website",
+    "description": "Modern, responsive portfolio website showcasing projects and skills. Built with vanilla HTML, CSS, and JavaScript.",
+    "image": "assets/project5.jpg",
+    "category": "web",
+    "tags": ["HTML", "CSS", "JavaScript", "Responsive"],
+    "link": "#",
+    "year": 2024
+  },
+  {
+    "id": 6,
+    "title": "Analytics Dashboard",
+    "slug": "analytics-dashboard",
+    "description": "Real-time analytics dashboard with interactive charts and data visualization. Built with Vue.js and D3.js.",
+    "image": "assets/project6.jpg",
+    "category": "web",
+    "tags": ["Vue.js", "D3.js", "Charts", "Dashboard"],
+    "link": "#",
+    "year": 2023
+  }
+]
