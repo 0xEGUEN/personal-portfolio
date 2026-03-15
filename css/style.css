@@ -934,6 +934,7 @@ textarea {
 .cta-banner .section-subtitle {
   position: relative;
   z-index: 1;
+  margin: 0 auto 30px;
 }
 
 /* ── Footer ── */
