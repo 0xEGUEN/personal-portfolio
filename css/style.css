@@ -119,6 +119,8 @@ ul, ol { list-style: none; }
 button {
   font-family: inherit;
   cursor: pointer;
+  background: none;
+  border: none;
 }
 
 .page {
@@ -4103,10 +4105,27 @@ body.light-mode .progress-fill {
   /* theme toggle item — circle style */
   .bnav-item--theme {
     color: rgba(255, 255, 255, 0.5);
+    background: transparent;
+    border: none;
   }
 
   .bnav-item--theme span.material-symbols-outlined {
     font-size: 20px;
+  }
+
+  .bnav-item--theme:hover {
+    color: var(--accent-primary);
+    background: rgba(108, 143, 255, 0.12);
+  }
+
+  body.light-mode .bnav-item--theme {
+    color: rgba(26, 26, 46, 0.5);
+    background: transparent;
+  }
+
+  body.light-mode .bnav-item--theme:hover {
+    color: var(--accent-primary);
+    background: rgba(61, 90, 241, 0.08);
   }
 
   /* light mode adjustments */
