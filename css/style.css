@@ -4008,8 +4008,8 @@ body.light-mode .progress-fill {
 
 @media (max-width: 768px) {
 
-  /* hide desktop navbar toggle & cta on mobile */
-  .nav-toggle { display: flex; }
+  /* hide desktop navbar elements on mobile — nav is replaced by bottom nav */
+  .nav-toggle { display: none; }
   .nav-cta    { display: none; }
   .nav-links  { display: none; }
 
