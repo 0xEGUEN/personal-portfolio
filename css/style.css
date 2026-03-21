@@ -702,10 +702,6 @@ textarea {
   }
 }
 
-.animate-in {
-  /* scroll animation removed */
-}
-
 .navbar {
   animation: fadeInDown 0.6s ease-out;
 }
