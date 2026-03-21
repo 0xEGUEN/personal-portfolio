@@ -4060,6 +4060,10 @@ body.light-mode .progress-fill {
     transition: color 0.2s ease, transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
     position: relative;
     border-radius: 24px;
+    background: transparent;
+    border: none;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   .bnav-item span.material-symbols-outlined {
@@ -4105,8 +4109,11 @@ body.light-mode .progress-fill {
   /* theme toggle item — circle style */
   .bnav-item--theme {
     color: rgba(255, 255, 255, 0.5);
-    background: transparent;
-    border: none;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   .bnav-item--theme span.material-symbols-outlined {
