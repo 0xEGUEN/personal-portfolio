@@ -6,10 +6,29 @@
     <title>Adwa Fattur Rahman — Full-Stack Developer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inconsolata:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@400,0&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inconsolata:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&family=DM+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@400,0&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">
+                Loading<span class="loading-dots">
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <span class="icon material-symbols-outlined">light_mode</span>
+    </button>
+
     <div class="page">
         <!-- Header -->
         <header class="navbar" id="navbar">
@@ -19,7 +38,7 @@
                     <span>Adwa Fattur Rahman</span>
                 </a>
                 <nav class="nav-links" id="nav-links">
-                    <a href="index.html">Home</a>
+                    <a href="index.html" class="active">Home</a>
                     <a href="about.html">About</a>
                     <a href="gallery.html">Gallery</a>
                     <a href="contact.html">Contact</a>
@@ -43,6 +62,7 @@
                         <p class="hero-desc">I'm a developer who blends clean code, minimal design, and reliable delivery to create products people enjoy using.</p>
                         <div class="hero-actions">
                             <a class="btn btn-primary" href="contact.html">Get In Touch</a>
+                            <a class="btn btn-outline" href="about.html">About Me</a>
                         </div>
                         <div class="hero-stat-single">
                             <div class="num">2+</div>
@@ -53,7 +73,7 @@
                                 <div class="clock-container">
                                     <canvas id="clockCanvas" width="120" height="120"></canvas>
                                 </div>
-                                <div class="date-display" id="dateDisplay">Mar 15, 2026</div>
+                                <div class="date-display" id="dateDisplay">Mar 21, 2026</div>
                             </div>
                         </div>
                     </div>
@@ -72,7 +92,6 @@
                     <p class="section-label">Services</p>
                     <h2 class="section-title">What I Do</h2>
                     <p class="section-subtitle">I focus on full-stack development while exploring modern web technologies.</p>
-
                     <div class="services-grid" style="margin-top:40px">
                         <div class="service-card">
                             <div class="icon"><span class="material-symbols-outlined">code_blocks</span></div>
@@ -88,6 +107,75 @@
                             <div class="icon"><span class="material-symbols-outlined">hub</span></div>
                             <h3>API Development</h3>
                             <p>Robust backend solutions and REST APIs with clean, maintainable code.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section class="section" id="skills">
+                <div class="container">
+                    <div style="margin-bottom: 48px;">
+                        <p class="section-label">Skills</p>
+                        <h2 class="section-title">My Expertise</h2>
+                        <p class="section-subtitle">Technologies and tools I work with to build amazing digital products.</p>
+                    </div>
+
+                    <!-- Tech Stack Slider -->
+                    <div class="tech-slider-container">
+                        <div class="tech-slider" id="techSlider">
+                            <div class="tech-slide">
+                                <div class="tech-category-header">
+                                    <h3>Frontend Development</h3>
+                                    <p>Building beautiful and responsive user interfaces</p>
+                                </div>
+                                <div class="tech-logos">
+                                    <div class="tech-logo"><div class="tech-icon html">HTML5</div><span>HTML5</span></div>
+                                    <div class="tech-logo"><div class="tech-icon css">CSS3</div><span>CSS3</span></div>
+                                    <div class="tech-logo"><div class="tech-icon js">JS</div><span>JavaScript</span></div>
+                                    <div class="tech-logo"><div class="tech-icon react">⚛</div><span>React</span></div>
+                                    <div class="tech-logo"><div class="tech-icon sass">SASS</div><span>Sass</span></div>
+                                </div>
+                            </div>
+                            <div class="tech-slide">
+                                <div class="tech-category-header">
+                                    <h3>Backend Development</h3>
+                                    <p>Server-side development and API creation</p>
+                                </div>
+                                <div class="tech-logos">
+                                    <div class="tech-logo"><div class="tech-icon nodejs">NODE</div><span>Node.js</span></div>
+                                    <div class="tech-logo"><div class="tech-icon python">PY</div><span>Python</span></div>
+                                    <div class="tech-logo"><div class="tech-icon express">EX</div><span>Express</span></div>
+                                    <div class="tech-logo"><div class="tech-icon mongodb">DB</div><span>MongoDB</span></div>
+                                    <div class="tech-logo"><div class="tech-icon sql">SQL</div><span>MySQL</span></div>
+                                </div>
+                            </div>
+                            <div class="tech-slide">
+                                <div class="tech-category-header">
+                                    <h3>Tools & Design</h3>
+                                    <p>Development tools and design software</p>
+                                </div>
+                                <div class="tech-logos">
+                                    <div class="tech-logo"><div class="tech-icon git">GIT</div><span>Git</span></div>
+                                    <div class="tech-logo"><div class="tech-icon vscode">VS</div><span>VS Code</span></div>
+                                    <div class="tech-logo"><div class="tech-icon figma">FIG</div><span>Figma</span></div>
+                                    <div class="tech-logo"><div class="tech-icon docker">🐳</div><span>Docker</span></div>
+                                    <div class="tech-logo"><div class="tech-icon aws">AWS</div><span>AWS</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slider-nav">
+                            <button class="slider-btn prev" id="prevBtn">
+                                <span class="material-symbols-outlined">chevron_left</span>
+                            </button>
+                            <div class="slider-dots" id="sliderDots">
+                                <span class="dot active" data-slide="0"></span>
+                                <span class="dot" data-slide="1"></span>
+                                <span class="dot" data-slide="2"></span>
+                            </div>
+                            <button class="slider-btn next" id="nextBtn">
+                                <span class="material-symbols-outlined">chevron_right</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -119,10 +207,9 @@
                     <div class="footer-col">
                         <h4>Pages</h4>
                         <a href="index.html">Home</a>
-                        <a href="#about">About</a>
-                        <a href="#services">Services</a>
-                        <a href="#projects">Projects</a>
-                        <a href="#contact">Contact</a>
+                        <a href="about.html">About</a>
+                        <a href="gallery.html">Gallery</a>
+                        <a href="contact.html">Contact</a>
                     </div>
                     <div class="footer-col">
                         <h4>Services</h4>
@@ -144,11 +231,35 @@
             </div>
         </footer>
     </div>
-    
+
     <!-- Custom Cursor -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-glow" id="cursor-glow"></div>
-    
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="Mobile navigation">
+        <a class="bnav-item" href="index.html" data-page="index">
+            <span class="material-symbols-outlined">home</span>
+            <span class="bnav-label">Home</span>
+        </a>
+        <a class="bnav-item" href="gallery.html" data-page="gallery">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="bnav-label">Gallery</span>
+        </a>
+        <a class="bnav-item" href="about.html" data-page="about">
+            <span class="material-symbols-outlined">person</span>
+            <span class="bnav-label">About</span>
+        </a>
+        <a class="bnav-item" href="contact.html" data-page="contact">
+            <span class="material-symbols-outlined">mail</span>
+            <span class="bnav-label">Contact</span>
+        </a>
+        <button class="bnav-item bnav-item--theme" id="bnavTheme" aria-label="Toggle theme">
+            <span class="material-symbols-outlined" id="bnavThemeIcon">light_mode</span>
+            <span class="bnav-label">Theme</span>
+        </button>
+    </nav>
+
     <script src="js/script.js"></script>
 </body>
 </html>

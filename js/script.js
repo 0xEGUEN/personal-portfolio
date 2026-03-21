@@ -1,25 +1,58 @@
-// Scroll Animations with Stagger
-const observerOptions = {
-  threshold: 0.2,
-  rootMargin: '0px 0px -100px 0px'
-};
+// ============================================
+// LOADING SCREEN & THEME MANAGEMENT
+// ============================================
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, index) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => {
-        entry.target.classList.add('animate-in');
-      }, index * 100);
-      observer.unobserve(entry.target);
-    }
-  });
-}, observerOptions);
-
-// Observe all section content
-const animateElements = document.querySelectorAll('.section-title, .section-label, .section-subtitle, .service-card, .project-card, .testimonial-card, .hero-title, .hero-desc, .hero-actions, .hero-stats, .contact-card, .blog-card, .gallery-item, .about-intro, .htimeline-item');
-animateElements.forEach(el => {
-  observer.observe(el);
+// Loading Screen Handler
+window.addEventListener('load', function() {
+  const loadingScreen = document.getElementById('loadingScreen');
+  if (loadingScreen) {
+    setTimeout(() => {
+      loadingScreen.classList.add('hidden');
+    }, 800);
+  }
 });
+
+// Theme Toggle Functionality
+const themeToggle = document.getElementById('themeToggle');
+const htmlElement = document.documentElement;
+
+// Check for saved theme preference or default to dark mode
+const currentTheme = localStorage.getItem('theme') || 'dark-mode';
+if (currentTheme === 'light-mode') {
+  document.body.classList.add('light-mode');
+  updateThemeIcon('dark_mode');
+} else {
+  document.body.classList.remove('light-mode');
+  updateThemeIcon('light_mode');
+}
+
+function updateThemeIcon(iconName) {
+  if (themeToggle) {
+    const icon = themeToggle.querySelector('.icon');
+    if (icon) {
+      icon.textContent = iconName;
+    }
+  }
+}
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', function() {
+    document.body.classList.toggle('light-mode');
+    themeToggle.classList.add('rotating');
+    
+    const isLightMode = document.body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLightMode ? 'light-mode' : 'dark-mode');
+    updateThemeIcon(isLightMode ? 'dark_mode' : 'light_mode');
+    
+    setTimeout(() => {
+      themeToggle.classList.remove('rotating');
+    }, 600);
+  });
+}
+
+// ============================================
+// SCROLL ANIMATIONS WITH STAGGER
+// ============================================
 
 // Custom Cursor Glow Effect
 const cursor = document.getElementById('cursor');
@@ -57,12 +90,14 @@ interactiveElements.forEach(element => {
     if (cursorGlow) cursorGlow.style.width = '60px';
     if (cursorGlow) cursorGlow.style.height = '60px';
     if (cursorGlow) cursorGlow.style.borderColor = 'rgba(217, 225, 197, 0.8)';
+    element.style.transform = 'scale(1.02)';
   });
   
   element.addEventListener('mouseleave', () => {
     if (cursorGlow) cursorGlow.style.width = '40px';
     if (cursorGlow) cursorGlow.style.height = '40px';
     if (cursorGlow) cursorGlow.style.borderColor = 'rgba(217, 225, 197, 0.4)';
+    element.style.transform = 'scale(1)';
   });
 });
 
@@ -104,6 +139,16 @@ window.addEventListener('scroll', function() {
   }
 });
 
+// Parallax effect on scroll
+window.addEventListener('scroll', function() {
+  const scrolled = window.pageYOffset;
+  const parallaxElements = document.querySelectorAll('.hero::before, .hero::after, .cta-banner::before, .cta-banner::after');
+  
+  parallaxElements.forEach(el => {
+    el.style.transform = `translateY(${scrolled * 0.5}px)`;
+  });
+});
+
 // Contact Form Handling
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
@@ -120,6 +165,9 @@ if (contactForm) {
     const successAlert = document.getElementById('successAlert');
     if (successAlert) {
       successAlert.classList.add('show');
+      
+      // Add animation
+      successAlert.style.animation = 'slideInUp 0.6s ease-out';
       
       // Reset form
       contactForm.reset();
@@ -139,6 +187,26 @@ if (contactForm) {
     // });
   });
 }
+
+// Add ripple effect to buttons
+document.querySelectorAll('.btn').forEach(button => {
+  button.addEventListener('click', function(e) {
+    const ripple = document.createElement('span');
+    const rect = this.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+    
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    ripple.classList.add('ripple');
+    
+    this.appendChild(ripple);
+    
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
 
 // Analog Clock with Date
 function initializeClock() {
@@ -255,6 +323,100 @@ if (document.readyState === 'loading') {
   initializeClock();
 }
 
+// ============================================
+// TECH SLIDER FUNCTIONALITY
+// ============================================
+
+// Tech Slider
+let currentSlide = 0;
+const totalSlides = 3;
+
+const techSlider = document.getElementById('techSlider');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const dots = document.querySelectorAll('.dot');
+
+function updateSlider() {
+  if (techSlider) {
+    const translateX = -currentSlide * (100 / totalSlides);
+    techSlider.style.transform = `translateX(${translateX}%)`;
+  }
+  
+  // Update dots
+  dots.forEach((dot, index) => {
+    dot.classList.toggle('active', index === currentSlide);
+  });
+}
+
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % totalSlides;
+  updateSlider();
+}
+
+function prevSlide() {
+  currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+  updateSlider();
+}
+
+function goToSlide(slideIndex) {
+  currentSlide = slideIndex;
+  updateSlider();
+}
+
+// Event listeners
+if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+
+dots.forEach((dot, index) => {
+  dot.addEventListener('click', () => goToSlide(index));
+});
+
+// Auto-slide every 5 seconds
+setInterval(nextSlide, 5000);
+
+// ============================================
+// SKILLS PROGRESS ANIMATION
+// ============================================
+
+function animateCounter(el, target, duration) {
+  let start = 0;
+  const step = (timestamp) => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    // ease out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(eased * target) + '%';
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const progressObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const items = entry.target.querySelectorAll('.progress-item');
+      items.forEach((item, i) => {
+        const fill = item.querySelector('.progress-fill');
+        const counterEl = item.querySelector('.progress-counter');
+        const target = parseInt(fill.getAttribute('data-width'));
+
+        // stagger each bar
+        setTimeout(() => {
+          item.classList.add('progress-item--active');
+          fill.style.width = target + '%';
+          if (counterEl) animateCounter(counterEl, target, 1200);
+        }, i * 180);
+      });
+      progressObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+const progressSection = document.querySelector('.progress-grid');
+if (progressSection) {
+  progressObserver.observe(progressSection);
+}
+
 // Disable Copy Feature (except on contact page)
 const isContactPage = window.location.pathname.includes('contact.html');
 
@@ -286,3 +448,60 @@ if (!isContactPage) {
   document.documentElement.style.msUserSelect = 'none';
   document.documentElement.style.mozUserSelect = 'none';
 }
+
+// ============================================
+// MOBILE BOTTOM NAV
+// ============================================
+
+(function () {
+  const bottomNav = document.getElementById('bottomNav');
+  if (!bottomNav) return;
+
+  // ── Active page highlight ──
+  const page = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+  document.querySelectorAll('.bnav-item[data-page]').forEach(item => {
+    if (item.dataset.page === page) item.classList.add('active');
+  });
+
+  // ── Theme toggle via bottom nav ──
+  const bnavTheme = document.getElementById('bnavTheme');
+  const bnavIcon  = document.getElementById('bnavThemeIcon');
+
+  function syncBnavIcon() {
+    if (!bnavIcon) return;
+    bnavIcon.textContent = document.body.classList.contains('light-mode') ? 'dark_mode' : 'light_mode';
+  }
+  syncBnavIcon();
+
+  if (bnavTheme) {
+    bnavTheme.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      localStorage.setItem('theme', isLight ? 'light-mode' : 'dark-mode');
+      syncBnavIcon();
+      // also sync desktop toggle icon if present
+      const desktopIcon = document.querySelector('#themeToggle .icon');
+      if (desktopIcon) desktopIcon.textContent = isLight ? 'dark_mode' : 'light_mode';
+    });
+  }
+
+  // ── Hide on scroll down, show on scroll up ──
+  let lastY = window.scrollY;
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const currentY = window.scrollY;
+        if (currentY > lastY + 8 && currentY > 80) {
+          bottomNav.classList.add('hidden');
+        } else if (currentY < lastY - 8) {
+          bottomNav.classList.remove('hidden');
+        }
+        lastY = currentY;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+})();

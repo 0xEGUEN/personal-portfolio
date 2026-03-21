@@ -10,6 +10,25 @@
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">
+                Loading<span class="loading-dots">
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <span class="icon material-symbols-outlined">light_mode</span>
+    </button>
+
     <div class="page">
         <!-- Header -->
         <header class="navbar" id="navbar">
@@ -84,10 +103,62 @@
                 </div>
             </section>
 
+            <!-- Skills Progress Section -->
+            <section class="section" id="skills">
+                <div class="container">
+                    <div style="margin-bottom: 48px;">
+                        <p class="section-label">Skills</p>
+                        <h2 class="section-title">Proficiency Level</h2>
+                        <p class="section-subtitle">A breakdown of my technical skill levels across different areas.</p>
+                    </div>
+                    <div class="progress-grid">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Frontend Development</span>
+                                <span class="progress-counter">85%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="85"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Backend Development</span>
+                                <span class="progress-counter">75%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="75"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>UI/UX Design</span>
+                                <span class="progress-counter">70%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="70"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Problem Solving</span>
+                                <span class="progress-counter">90%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="90"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Timeline -->
             <section class="section section--smoke">
                 <div class="container">
-                    <h2 class="section-title">My Journey</h2>
+                    <div style="margin-bottom: 48px;">
+                        <p class="section-label">Journey</p>
+                        <h2 class="section-title">My Journey</h2>
+                    </div>
                     
                     <div class="htimeline">
                         <div class="htimeline-item">
@@ -163,7 +234,31 @@
     <!-- Custom Cursor -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-glow" id="cursor-glow"></div>
-    
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="Mobile navigation">
+        <a class="bnav-item" href="index.html" data-page="index">
+            <span class="material-symbols-outlined">home</span>
+            <span class="bnav-label">Home</span>
+        </a>
+        <a class="bnav-item" href="gallery.html" data-page="gallery">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="bnav-label">Gallery</span>
+        </a>
+        <a class="bnav-item" href="about.html" data-page="about">
+            <span class="material-symbols-outlined">person</span>
+            <span class="bnav-label">About</span>
+        </a>
+        <a class="bnav-item" href="contact.html" data-page="contact">
+            <span class="material-symbols-outlined">mail</span>
+            <span class="bnav-label">Contact</span>
+        </a>
+        <button class="bnav-item bnav-item--theme" id="bnavTheme" aria-label="Toggle theme">
+            <span class="material-symbols-outlined" id="bnavThemeIcon">light_mode</span>
+            <span class="bnav-label">Theme</span>
+        </button>
+    </nav>
+
     <script src="js/script.js"></script>
 </body>
 </html>
