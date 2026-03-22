@@ -653,15 +653,18 @@ button {
   position: fixed;
   width: 40px;
   height: 40px;
-  border: 2px solid rgba(217, 225, 197, 0.4);
+  border: 1.5px solid rgba(108, 143, 255, 0.5);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
   top: 0;
   left: 0;
   transform: translate(-50%, -50%);
-  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              border-color 0.3s ease,
+              opacity 0.3s ease;
+  background: radial-gradient(circle, rgba(108, 143, 255, 0.06) 0%, transparent 70%);
 }
 
 button,
@@ -3537,6 +3540,7 @@ body.light-mode .theme-toggle:hover {
 /* ── Light Mode Cursor Glow ── */
 body.light-mode .cursor-glow {
   border-color: rgba(61, 90, 241, 0.4);
+  background: radial-gradient(circle, rgba(61, 90, 241, 0.05) 0%, transparent 70%);
 }
 
 /* ── Light Mode Navbar Brand Logo ── */

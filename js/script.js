@@ -89,14 +89,14 @@ interactiveElements.forEach(element => {
   element.addEventListener('mouseenter', () => {
     if (cursorGlow) cursorGlow.style.width = '60px';
     if (cursorGlow) cursorGlow.style.height = '60px';
-    if (cursorGlow) cursorGlow.style.borderColor = 'rgba(217, 225, 197, 0.8)';
+    if (cursorGlow) cursorGlow.style.borderColor = 'rgba(108, 143, 255, 0.7)';
     element.style.transform = 'scale(1.02)';
   });
   
   element.addEventListener('mouseleave', () => {
     if (cursorGlow) cursorGlow.style.width = '40px';
     if (cursorGlow) cursorGlow.style.height = '40px';
-    if (cursorGlow) cursorGlow.style.borderColor = 'rgba(217, 225, 197, 0.4)';
+    if (cursorGlow) cursorGlow.style.borderColor = 'rgba(108, 143, 255, 0.5)';
     element.style.transform = 'scale(1)';
   });
 });
