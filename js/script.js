@@ -417,37 +417,7 @@ if (progressSection) {
   progressObserver.observe(progressSection);
 }
 
-// Disable Copy Feature (except on contact page)
-const isContactPage = window.location.pathname.includes('contact.html');
 
-if (!isContactPage) {
-  // Disable right-click context menu
-  document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-    return false;
-  });
-
-  // Disable Ctrl+C copy
-  document.addEventListener('copy', function(e) {
-    e.preventDefault();
-    return false;
-  });
-
-  // Disable keyboard shortcuts for copy
-  document.addEventListener('keydown', function(e) {
-    // Ctrl+C or Cmd+C
-    if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
-      e.preventDefault();
-      return false;
-    }
-  });
-
-  // Add CSS to disable text selection
-  document.documentElement.style.userSelect = 'none';
-  document.documentElement.style.webkitUserSelect = 'none';
-  document.documentElement.style.msUserSelect = 'none';
-  document.documentElement.style.mozUserSelect = 'none';
-}
 
 // ============================================
 // MOBILE BOTTOM NAV
