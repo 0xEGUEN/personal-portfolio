@@ -3422,6 +3422,35 @@ body.light-mode .contact-card a:hover {
   color: var(--accent-secondary);
 }
 
+body.light-mode .cc-label {
+  color: var(--text-secondary);
+}
+
+body.light-mode .cc-value {
+  color: var(--text-primary);
+}
+
+body.light-mode .cc-value a {
+  color: var(--accent-primary);
+}
+
+body.light-mode .contact-header h2 {
+  color: var(--text-primary);
+}
+
+body.light-mode .contact-header .lead {
+  color: var(--text-secondary);
+}
+
+body.light-mode .form-card h3 {
+  color: var(--text-primary);
+}
+
+body.light-mode .form-card {
+  background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-base) 100%);
+  border-color: var(--border-color);
+}
+
 body.light-mode input,
 body.light-mode textarea {
   background: rgba(0, 0, 0, 0.03);
