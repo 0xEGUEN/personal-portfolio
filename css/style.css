@@ -3434,6 +3434,12 @@ body.light-mode .cc-value a {
   color: var(--accent-primary);
 }
 
+body.light-mode .cc-icon {
+  background: rgba(61, 90, 241, 0.1);
+  border-color: rgba(61, 90, 241, 0.25);
+  color: var(--accent-primary);
+}
+
 body.light-mode .contact-header h2 {
   color: var(--text-primary);
 }
