@@ -355,7 +355,8 @@ button {
 
 .hero-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
+  max-width: 720px;
   gap: 48px;
   align-items: center;
   position: relative;
