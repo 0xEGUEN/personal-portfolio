@@ -38,9 +38,9 @@ body.light-mode {
   --bg-tertiary: #f0f0f0;
   --accent-primary: #3d5af1;
   --accent-secondary: #d4900a;
-  --text-primary: #1a1a2e;
-  --text-secondary: #5a5a6e;
-  --text-tertiary: #777777;
+  --text-primary: #0a0a14;
+  --text-secondary: #2c2c3e;
+  --text-tertiary: #4a4a5e;
   --border-color: rgba(61, 90, 241, 0.15);
   --accent-blue: #3d5af1;
   --accent-sage: #8b9d6f;
@@ -1640,20 +1640,28 @@ body.light-mode .gallery-card {
   background: var(--bg-secondary);
 }
 
+body.light-mode .gallery-card-header h3 {
+  color: #0a0a14;
+}
+
+body.light-mode .gallery-desc {
+  color: #2c2c3e;
+}
+
 body.light-mode .tech-badge {
   background: rgba(61, 90, 241, 0.1);
   border-color: rgba(61, 90, 241, 0.2);
-  color: var(--accent-primary);
+  color: #3d5af1;
 }
 
 body.light-mode .gallery-link {
-  color: var(--accent-primary);
-  border-color: var(--accent-primary);
+  color: #3d5af1;
+  border-color: #3d5af1;
 }
 
 body.light-mode .gallery-link:hover {
-  background: var(--accent-primary);
-  color: var(--bg-primary);
+  background: #3d5af1;
+  color: #ffffff;
 }
 
 
