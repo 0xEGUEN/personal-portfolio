@@ -659,3 +659,94 @@ if (progressSection) {
     }
   }, { passive: true });
 })();
+
+// ============================================
+// WAKATIME STATS INTEGRATION
+// ============================================
+
+async function fetchWakaTimeStats() {
+  const container = document.getElementById('wakastats');
+  if (!container) return;
+
+  try {
+    // Fetch from WakaTime public profile stats endpoint
+    // This uses the profile ID instead of API key for security
+    const response = await fetch('https://wakatime.com/api/v1/users/f52e4804-96f9-42c9-a5ea-5a278d6afcd1/stats', {
+      mode: 'cors',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      // Fallback to static badge if API is unavailable
+      container.innerHTML = `
+        <div class="wakatime-static">
+          <img src="https://wakatime.com/badge/user/f52e4804-96f9-42c9-a5ea-5a278d6afcd1.svg?style=flat&color=6c8fff" alt="WakaTime Badge" />
+        </div>
+      `;
+      return;
+    }
+
+    const data = await response.json();
+    
+    // Get total time - check various possible response structures
+    const totalSeconds = data.total_seconds || data.grand_total?.total_seconds || 0;
+    const totalHours = (totalSeconds / 3600).toFixed(1);
+    
+    // Get top languages
+    const languages = data.languages || [];
+    const topLanguages = languages.slice(0, 5);
+    
+    // Calculate max percentage for bar chart
+    const maxPercent = topLanguages.length > 0 ? topLanguages[0].percent : 0;
+
+    // Build HTML
+    let html = `
+      <div class="wakatime-total">
+        <div class="wakatime-total-label">Last 30 Days</div>
+        <div class="wakatime-total-value">${totalHours}h</div>
+      </div>
+    `;
+
+    if (topLanguages.length > 0) {
+      html += '<div class="wakatime-languages">';
+      topLanguages.forEach(lang => {
+        const percent = (lang.percent || 0).toFixed(1);
+        const barWidth = lang.percent || 0;
+        html += `
+          <div class="language-item">
+            <div class="language-name">${lang.name}</div>
+            <div class="language-bar-wrapper">
+              <div class="language-bar" style="width: ${barWidth}%"></div>
+            </div>
+            <div class="language-percent">${percent}%</div>
+          </div>
+        `;
+      });
+      html += '</div>';
+    } else {
+      // If no languages data, show static badge
+      throw new Error('No language data available');
+    }
+
+    container.innerHTML = html;
+  } catch (error) {
+    console.log('WakaTime API unavailable, showing badge:', error.message);
+    const container = document.getElementById('wakastats');
+    if (container) {
+      container.innerHTML = `
+        <div class="wakatime-static">
+          <img src="https://wakatime.com/badge/user/f52e4804-96f9-42c9-a5ea-5a278d6afcd1.svg?style=flat&color=6c8fff" alt="WakaTime Badge" />
+        </div>
+      `;
+    }
+  }
+}
+
+// Load WakaTime stats when page loads
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', fetchWakaTimeStats);
+} else {
+  fetchWakaTimeStats();
+}
