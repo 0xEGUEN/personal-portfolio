@@ -1607,6 +1607,22 @@ textarea {
   font-family: var(--font-mono);
 }
 
+.wakatime-embed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0;
+  padding: 12px 0;
+  border-radius: 8px;
+  background: rgba(108, 143, 255, 0.05);
+}
+
+.wakatime-embed img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 .gallery-card-footer {
   padding: 16px 24px;
   border-top: 1px solid var(--border-color);
