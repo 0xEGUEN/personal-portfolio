@@ -1,5 +1,3 @@
-# Adwa Fattur Rahman — Portfolio Website
-
 A modern, responsive portfolio website showcasing full-stack development skills with beautiful animations, dark/light mode toggle, and mobile-first design.
 
 ## ✨ Features
@@ -173,18 +171,6 @@ Site automatically deploys on push to `origin/main`.
 - No cookies or tracking
 - No external API calls
 - All data stored locally in browser (localStorage for theme)
-
-## 📄 License
-
-© 2026 Adwa Fattur Rahman. All rights reserved.
-
-## 📞 Contact
-
-- **Email**: [adwarahmant@gmail.com](mailto:adwarahmant@gmail.com)
-- **Phone**: +62 878-6220-1312
-- **LinkedIn**: [linkedin.com](https://linkedin.com)
-- **GitHub**: [@0xEGUEN](https://github.com)
-
 ---
 
 **Made with ❤️ and carefully crafted code.**
