@@ -2068,6 +2068,12 @@ textarea.input {
   color: #4a9eff;
 }
 
+.alert-error {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
 .alert.show {
   display: block;
   animation: slideDown 0.4s cubic-bezier(0.23, 1, 0.320, 1);
@@ -3486,13 +3492,15 @@ body.light-mode .form-group {
   border-color: rgba(0, 0, 0, 0.1);
 }
 
-body.light-mode .success-alert {
+body.light-mode .success-alert,
+body.light-mode .alert-success {
   background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
   border-color: rgba(34, 197, 94, 0.3);
   color: #166534;
 }
 
-body.light-mode .error-alert {
+body.light-mode .error-alert,
+body.light-mode .alert-error {
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
   border-color: rgba(239, 68, 68, 0.3);
   color: #991b1b;

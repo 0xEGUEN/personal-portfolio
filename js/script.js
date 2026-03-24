@@ -54,20 +54,57 @@ if (themeToggle) {
 // SCROLL ANIMATIONS WITH STAGGER
 // ============================================
 
+// Throttle function for performance optimization
+function throttle(func, limit) {
+  let inThrottle;
+  return function(...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
+
+// Page visibility API to stop animations on tab hidden
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    // pause animations
+    document.body.style.animationPlayState = 'paused';
+  } else {
+    // resume animations
+    document.body.style.animationPlayState = 'running';
+  }
+});
+
 // Custom Cursor Glow Effect
 const cursor = document.getElementById('cursor');
 const cursorGlow = document.getElementById('cursor-glow');
 let mouseX = 0, mouseY = 0;
 let glowX = 0, glowY = 0;
+let glowAnimationId = null;
+let isPageVisible = true;
 
-// Track mouse position
-document.addEventListener('mousemove', (e) => {
+// Track visibility changes
+document.addEventListener('visibilitychange', () => {
+  isPageVisible = !document.hidden;
+  if (isPageVisible) {
+    startGlowAnimation();
+  } else if (glowAnimationId) {
+    cancelAnimationFrame(glowAnimationId);
+  }
+});
+
+// Track mouse position with throttling
+document.addEventListener('mousemove', throttle((e) => {
   mouseX = e.clientX;
   mouseY = e.clientY;
-});
+}, 16));
 
 // Animate glow effect with smooth trailing
 function animateGlow() {
+  if (!isPageVisible) return;
+  
   // Smooth movement for glow effect
   glowX += (mouseX - glowX) * 0.15;
   glowY += (mouseY - glowY) * 0.15;
@@ -77,10 +114,16 @@ function animateGlow() {
     cursorGlow.style.top = glowY + 'px';
   }
   
-  requestAnimationFrame(animateGlow);
+  glowAnimationId = requestAnimationFrame(animateGlow);
 }
 
-animateGlow();
+function startGlowAnimation() {
+  if (!glowAnimationId) {
+    glowAnimationId = requestAnimationFrame(animateGlow);
+  }
+}
+
+startGlowAnimation();
 
 // Hover effects for interactive elements
 const interactiveElements = document.querySelectorAll('button, a, .btn, input, textarea, .contact-card, .blog-card, .gallery-item, .chip');
@@ -139,56 +182,96 @@ window.addEventListener('scroll', function() {
   }
 });
 
-// Parallax effect on scroll
-window.addEventListener('scroll', function() {
+// Parallax effect on scroll with throttle
+const parallaxHandler = throttle(function() {
   const scrolled = window.pageYOffset;
   const parallaxElements = document.querySelectorAll('.hero::before, .hero::after, .cta-banner::before, .cta-banner::after');
   
   parallaxElements.forEach(el => {
     el.style.transform = `translateY(${scrolled * 0.5}px)`;
   });
-});
+}, 16);
+
+window.addEventListener('scroll', parallaxHandler, { passive: true });
 
 // Contact Form Handling
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
-  contactForm.addEventListener('submit', function(e) {
+  contactForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     
     // Get form values
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const subject = document.getElementById('subject').value;
-    const message = document.getElementById('message').value;
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const subject = document.getElementById('subject').value.trim();
+    const message = document.getElementById('message').value.trim();
     
-    // Show success message
-    const successAlert = document.getElementById('successAlert');
-    if (successAlert) {
-      successAlert.classList.add('show');
-      
-      // Add animation
-      successAlert.style.animation = 'slideInUp 0.6s ease-out';
-      
-      // Reset form
-      contactForm.reset();
-      
-      // Hide alert after 5 seconds
-      setTimeout(() => {
-        successAlert.classList.remove('show');
-      }, 5000);
+    // Form validation
+    if (!name || !email || !subject || !message) {
+      showAlert('Please fill in all fields.', 'error');
+      return;
     }
     
-    // Here you can add code to send the form data to your backend
-    // Example with fetch:
-    // fetch('/api/contact', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ name, email, subject, message })
-    // });
+    if (!isValidEmail(email)) {
+      showAlert('Please enter a valid email address.', 'error');
+      return;
+    }
+    
+    // Disable submit button
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    
+    try {
+      // Send form data using FormSubmit.co (free service)
+      const response = await fetch('https://formsubmit.co/ajax/adwarahmant@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ name, email, subject, message })
+      });
+      
+      if (response.ok) {
+        showAlert('✓ Message sent successfully! I\'ll get back to you soon.', 'success');
+        contactForm.reset();
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      } else {
+        showAlert('Failed to send message. Please try again.', 'error');
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      showAlert('Error sending message. Please try again later.', 'error');
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+    }
   });
 }
 
-// Add ripple effect to buttons
+function showAlert(message, type) {
+  const alertEl = document.getElementById('successAlert');
+  if (alertEl) {
+    alertEl.textContent = message;
+    alertEl.className = `alert alert-${type}`;
+    alertEl.classList.add('show');
+    
+    setTimeout(() => {
+      alertEl.classList.remove('show');
+    }, 5000);
+  }
+}
+
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+// Add ripple effect to buttons with proper cleanup
 document.querySelectorAll('.btn').forEach(button => {
   button.addEventListener('click', function(e) {
     const ripple = document.createElement('span');
@@ -204,11 +287,68 @@ document.querySelectorAll('.btn').forEach(button => {
     
     this.appendChild(ripple);
     
-    setTimeout(() => ripple.remove(), 600);
+    const rippleTimeout = setTimeout(() => {
+      ripple.parentNode === this && ripple.remove();
+    }, 600);
+    
+    // Cleanup on button removal
+    ripple.addEventListener('transitionend', () => {
+      clearTimeout(rippleTimeout);
+      ripple.parentNode === this && ripple.remove();
+    });
   });
 });
 
-// Analog Clock with Date
+// ============================================
+// ANALOG CLOCK WITH DATE
+// ============================================
+
+// Clock configuration constants
+const CLOCK_CONFIG = {
+  FACE_RADIUS: 0.9,
+  NUMBER_FONT_SIZE: 0.15,
+  NUMBER_DISTANCE: 0.75,
+  HOUR_HAND_LENGTH: 0.5,
+  HOUR_HAND_WIDTH: 4,
+  MINUTE_HAND_LENGTH: 0.7,
+  MINUTE_HAND_WIDTH: 3,
+  SECOND_HAND_LENGTH: 0.75,
+  SECOND_HAND_WIDTH: 1.5,
+  CENTER_DOT_RADIUS: 0.08,
+  HOUR_ANGLE: Math.PI / 6,
+  MINUTE_ANGLE: Math.PI / 30,
+  SECOND_ANGLE: Math.PI / 30,
+  FACE_BG_DARK: 'rgba(26, 26, 26, 0.9)',
+  FACE_BG_LIGHT: 'rgba(245, 245, 245, 0.95)',
+  BORDER_DARK: 'rgba(74, 158, 255, 0.5)',
+  BORDER_LIGHT: 'rgba(61, 90, 241, 0.4)',
+  CENTER_DOT_DARK: '#4a9eff',
+  CENTER_DOT_LIGHT: '#3d5af1',
+  NUMBER_COLOR_DARK: 'rgba(255, 255, 255, 0.8)',
+  NUMBER_COLOR_LIGHT: 'rgba(26, 26, 46, 0.8)',
+  HOUR_HAND_COLOR_DARK: '#4a9eff',
+  HOUR_HAND_COLOR_LIGHT: '#3d5af1',
+  MINUTE_HAND_COLOR_DARK: 'rgba(217, 225, 197, 0.9)',
+  MINUTE_HAND_COLOR_LIGHT: 'rgba(139, 157, 111, 0.9)',
+  SECOND_HAND_COLOR_DARK: 'rgba(217, 225, 197, 0.6)',
+  SECOND_HAND_COLOR_LIGHT: 'rgba(139, 157, 111, 0.6)'
+};
+
+let clockUpdateInterval = null;
+
+function getClockColors() {
+  const isLight = document.body.classList.contains('light-mode');
+  return {
+    faceBg: isLight ? CLOCK_CONFIG.FACE_BG_LIGHT : CLOCK_CONFIG.FACE_BG_DARK,
+    border: isLight ? CLOCK_CONFIG.BORDER_LIGHT : CLOCK_CONFIG.BORDER_DARK,
+    centerDot: isLight ? CLOCK_CONFIG.CENTER_DOT_LIGHT : CLOCK_CONFIG.CENTER_DOT_DARK,
+    number: isLight ? CLOCK_CONFIG.NUMBER_COLOR_LIGHT : CLOCK_CONFIG.NUMBER_COLOR_DARK,
+    hourHand: isLight ? CLOCK_CONFIG.HOUR_HAND_COLOR_LIGHT : CLOCK_CONFIG.HOUR_HAND_COLOR_DARK,
+    minuteHand: isLight ? CLOCK_CONFIG.MINUTE_HAND_COLOR_LIGHT : CLOCK_CONFIG.MINUTE_HAND_COLOR_DARK,
+    secondHand: isLight ? CLOCK_CONFIG.SECOND_HAND_COLOR_LIGHT : CLOCK_CONFIG.SECOND_HAND_COLOR_LIGHT
+  };
+}
+
 function initializeClock() {
   const canvas = document.getElementById('clockCanvas');
   if (!canvas) return;
@@ -236,35 +376,38 @@ function initializeClock() {
   }
   
   function drawFace(ctx, radius) {
+    const colors = getClockColors();
+    
     // Draw circle background
     ctx.beginPath();
-    ctx.arc(0, 0, radius * 0.9, 0, 2 * Math.PI);
-    ctx.fillStyle = 'rgba(26, 26, 26, 0.9)';
+    ctx.arc(0, 0, radius * CLOCK_CONFIG.FACE_RADIUS, 0, 2 * Math.PI);
+    ctx.fillStyle = colors.faceBg;
     ctx.fill();
     
     // Draw border
-    ctx.strokeStyle = 'rgba(74, 158, 255, 0.5)';
+    ctx.strokeStyle = colors.border;
     ctx.lineWidth = 2;
     ctx.stroke();
     
     // Draw center dot
     ctx.beginPath();
-    ctx.arc(0, 0, radius * 0.08, 0, 2 * Math.PI);
-    ctx.fillStyle = '#4a9eff';
+    ctx.arc(0, 0, radius * CLOCK_CONFIG.CENTER_DOT_RADIUS, 0, 2 * Math.PI);
+    ctx.fillStyle = colors.centerDot;
     ctx.fill();
   }
   
   function drawNumbers(ctx, radius) {
-    ctx.font = Math.floor(radius * 0.15) + 'px Arial';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    const colors = getClockColors();
+    ctx.font = Math.floor(radius * CLOCK_CONFIG.NUMBER_FONT_SIZE) + 'px Arial';
+    ctx.fillStyle = colors.number;
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'center';
     
     for (let num = 1; num <= 12; num++) {
-      const ang = num * Math.PI / 6;
+      const ang = num * CLOCK_CONFIG.HOUR_ANGLE;
       ctx.save();
       ctx.rotate(ang);
-      ctx.translate(0, -radius * 0.75);
+      ctx.translate(0, -radius * CLOCK_CONFIG.NUMBER_DISTANCE);
       ctx.rotate(-ang);
       ctx.fillText(num.toString(), 0, 0);
       ctx.restore();
@@ -272,20 +415,21 @@ function initializeClock() {
   }
   
   function drawTime(ctx, radius) {
+    const colors = getClockColors();
     const now = new Date();
     
     // Hour hand
     let hour = now.getHours() % 12;
-    hour = (hour * Math.PI / 6) + (now.getMinutes() * Math.PI / (6 * 60));
-    drawHand(ctx, hour, radius * 0.5, 4, '#4a9eff');
+    hour = (hour * CLOCK_CONFIG.HOUR_ANGLE) + (now.getMinutes() * CLOCK_CONFIG.HOUR_ANGLE / 60);
+    drawHand(ctx, hour, radius * CLOCK_CONFIG.HOUR_HAND_LENGTH, CLOCK_CONFIG.HOUR_HAND_WIDTH, colors.hourHand);
     
     // Minute hand
-    let minute = (now.getMinutes() * Math.PI / 30) + (now.getSeconds() * Math.PI / (30 * 60));
-    drawHand(ctx, minute, radius * 0.7, 3, 'rgba(217, 225, 197, 0.9)');
+    let minute = (now.getMinutes() * CLOCK_CONFIG.MINUTE_ANGLE) + (now.getSeconds() * CLOCK_CONFIG.MINUTE_ANGLE / 60);
+    drawHand(ctx, minute, radius * CLOCK_CONFIG.MINUTE_HAND_LENGTH, CLOCK_CONFIG.MINUTE_HAND_WIDTH, colors.minuteHand);
     
     // Second hand
-    let second = (now.getSeconds() * Math.PI / 30);
-    drawHand(ctx, second, radius * 0.75, 1.5, 'rgba(217, 225, 197, 0.6)');
+    let second = (now.getSeconds() * CLOCK_CONFIG.SECOND_ANGLE);
+    drawHand(ctx, second, radius * CLOCK_CONFIG.SECOND_HAND_LENGTH, CLOCK_CONFIG.SECOND_HAND_WIDTH, colors.secondHand);
   }
   
   function drawHand(ctx, ang, length, width, color) {
@@ -309,11 +453,39 @@ function initializeClock() {
     }
   }
   
+  // Listen for theme changes to update clock colors
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === 'class') {
+        drawClock();  // Redraw when theme changes
+      }
+    });
+  });
+  
+  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  
   updateDate();
   drawClock();
   
-  // Update clock every second
-  setInterval(drawClock, 1000);
+  // Update clock every second and stop on page hidden
+  function startClockUpdate() {
+    clockUpdateInterval = setInterval(() => {
+      if (!document.hidden) {
+        drawClock();
+      }
+    }, 1000);
+  }
+  
+  startClockUpdate();
+  
+  // Handle visibility changes
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (clockUpdateInterval) clearInterval(clockUpdateInterval);
+    } else {
+      startClockUpdate();
+    }
+  });
 }
 
 // Initialize clock when DOM is ready
@@ -371,8 +543,20 @@ dots.forEach((dot, index) => {
   dot.addEventListener('click', () => goToSlide(index));
 });
 
-// Auto-slide every 5 seconds
-setInterval(nextSlide, 5000);
+// Auto-slide every 5 seconds with visibility check
+let sliderInterval = setInterval(() => {
+  if (!document.hidden) nextSlide();
+}, 5000);
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    clearInterval(sliderInterval);
+  } else {
+    sliderInterval = setInterval(() => {
+      if (!document.hidden) nextSlide();
+    }, 5000);
+  }
+});
 
 // ============================================
 // SKILLS PROGRESS ANIMATION
