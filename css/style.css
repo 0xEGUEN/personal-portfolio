@@ -3187,6 +3187,46 @@ body.light-mode .about-desc {
   }
 }
 
+/* ── Prefers Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .cursor-glow {
+    display: none !important;
+  }
+  
+  .hero::before,
+  .hero::after,
+  .cta-banner::before,
+  .cta-banner::after,
+  .page-header::before,
+  .section--blog::before,
+  .section--gallery::before,
+  .section--about::before {
+    animation: none !important;
+  }
+  
+  .hero-stat-single {
+    animation: none !important;
+  }
+  
+  .empty-icon {
+    animation: none !important;
+  }
+  
+  .loading-spinner,
+  .loading-dot {
+    animation: none !important;
+  }
+}
+
 /* ── Smooth Transitions for All Elements ── */
 * {
   transition: background-color 350ms ease, border-color 350ms ease, color 350ms ease;
@@ -3194,6 +3234,148 @@ body.light-mode .about-desc {
 
 button, a, input, textarea {
   transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease, transform 200ms ease;
+}
+
+/* ── Mobile Optimizations ── */
+@media (max-width: 768px) {
+  /* Disable expensive backdrop filters on mobile */
+  .navbar {
+    backdrop-filter: none;
+    background: rgba(8, 8, 16, 0.95);
+  }
+  
+  .form-card {
+    backdrop-filter: none;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(26, 26, 26, 0.85));
+  }
+  
+  /* Reduce transitions on mobile */
+  * {
+    transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease !important;
+  }
+  
+  button, a, input, textarea {
+    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease !important;
+  }
+  
+  /* Disable gradient animations on mobile */
+  .section-title {
+    animation: none !important;
+    background: linear-gradient(135deg, #ffffff 0%, #b8c5ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Reduce parallax effects on mobile */
+  .hero::before,
+  .hero::after {
+    display: none;
+  }
+  
+  .cta-banner::before,
+  .cta-banner::after {
+    display: none;
+  }
+  
+  .page-header::before {
+    display: none;
+  }
+  
+  .section--blog::before,
+  .section--gallery::before,
+  .section--about::before {
+    display: none;
+  }
+  
+  /* Reduce hover transforms on mobile */
+  .service-card:hover {
+    transform: translateY(-2px) !important;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-4px) !important;
+  }
+  
+  .testimonial-card:hover,
+  .blog-card:hover,
+  .gallery-item:hover {
+    transform: translateY(-4px) !important;
+  }
+  
+  /* Disable icon scale animations on mobile */
+  .service-card:hover .icon {
+    transform: scale(1) !important;
+  }
+  
+  button:hover .material-symbols-outlined {
+    transform: none !important;
+  }
+  
+  /* Disable ripple effects on mobile */
+  .btn::before,
+  .btn::after {
+    display: none !important;
+  }
+  
+  /* Reduce button shadows on mobile */
+  .btn-primary,
+  .btn-outline,
+  .btn-sage {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  /* Optimize navbar performance */
+  .navbar {
+    transition: all 200ms ease !important;
+  }
+  
+  /* Reduce glow effects */
+  .theme-toggle {
+    box-shadow: 0 4px 12px rgba(108, 143, 255, 0.2) !important;
+  }
+  
+  /* Remove cursor glow on touch devices */
+  .cursor-glow {
+    display: none !important;
+  }
+  
+  /* Optimize form inputs */
+  .input {
+    transition: border-color 150ms ease !important;
+  }
+  
+  .input:focus {
+    box-shadow: 0 0 8px rgba(74, 158, 255, 0.1) !important;
+  }
+  
+  /* Reduce animation delays on stagger animations */
+  .project-card:nth-child(2) { animation-delay: 0.05s !important; }
+  .project-card:nth-child(3) { animation-delay: 0.1s !important; }
+  .project-card:nth-child(4) { animation-delay: 0.15s !important; }
+  
+  .gallery-item:nth-child(2) { animation-delay: 0.05s !important; }
+  .gallery-item:nth-child(3) { animation-delay: 0.08s !important; }
+  .gallery-item:nth-child(4) { animation-delay: 0.11s !important; }
+  .gallery-item:nth-child(5) { animation-delay: 0.14s !important; }
+  .gallery-item:nth-child(6) { animation-delay: 0.17s !important; }
+  
+  /* Optimize card animations */
+  .service-card {
+    animation: fadeInUp 0.4s ease-out backwards !important;
+  }
+  
+  .service-card:nth-child(2) { animation-delay: 0.05s !important; }
+  .service-card:nth-child(3) { animation-delay: 0.1s !important; }
+  
+  /* Reduce contact card effects */
+  .contact-card {
+    transition: all 150ms ease !important;
+  }
+  
+  .contact-card::before {
+    display: none !important;
+  }
 }
 
 

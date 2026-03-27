@@ -1,4 +1,33 @@
 // ============================================
+// DEVICE DETECTION & OPTIMIZATION
+// ============================================
+
+// Detect if device is mobile or touch-enabled
+const isMobileDevice = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+         (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+};
+
+const isTouchDevice = () => {
+  return (('ontouchstart' in window) || 
+          (navigator.maxTouchPoints > 0) || 
+          (navigator.msMaxTouchPoints > 0));
+};
+
+const isLowPerformanceDevice = () => {
+  // Check for low RAM devices (less than 4GB estimated)
+  if (navigator.deviceMemory && navigator.deviceMemory <= 4) {
+    return true;
+  }
+  // Check for slow connection
+  if (navigator.connection && navigator.connection.effectiveType) {
+    return navigator.connection.effectiveType === '4g' || 
+           navigator.connection.effectiveType === '3g';
+  }
+  return false;
+};
+
+// ============================================
 // LOADING SCREEN & THEME MANAGEMENT
 // ============================================
 
@@ -77,81 +106,92 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-// Custom Cursor Glow Effect
+// Custom Cursor Glow Effect - DISABLED ON MOBILE/TOUCH DEVICES
 const cursor = document.getElementById('cursor');
 const cursorGlow = document.getElementById('cursor-glow');
-let mouseX = 0, mouseY = 0;
-let glowX = 0, glowY = 0;
-let glowAnimationId = null;
-let isPageVisible = true;
 
-// Track visibility changes
-document.addEventListener('visibilitychange', () => {
-  isPageVisible = !document.hidden;
-  if (isPageVisible) {
-    startGlowAnimation();
-  } else if (glowAnimationId) {
-    cancelAnimationFrame(glowAnimationId);
-  }
-});
+// Only initialize cursor glow on desktop devices
+const shouldEnableCursorGlow = !isMobileDevice() && !isTouchDevice() && !isLowPerformanceDevice() && cursorGlow;
 
-// Track mouse position with throttling
-document.addEventListener('mousemove', throttle((e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-}, 16));
+if (shouldEnableCursorGlow) {
+  let mouseX = 0, mouseY = 0;
+  let glowX = 0, glowY = 0;
+  let glowAnimationId = null;
+  let isPageVisible = true;
 
-// Animate glow effect with smooth trailing
-function animateGlow() {
-  if (!isPageVisible) return;
-  
-  // Smooth movement for glow effect
-  glowX += (mouseX - glowX) * 0.15;
-  glowY += (mouseY - glowY) * 0.15;
-  
-  if (cursorGlow) {
-    cursorGlow.style.left = glowX + 'px';
-    cursorGlow.style.top = glowY + 'px';
-  }
-  
-  glowAnimationId = requestAnimationFrame(animateGlow);
-}
+  // Track visibility changes
+  document.addEventListener('visibilitychange', () => {
+    isPageVisible = !document.hidden;
+    if (isPageVisible) {
+      startGlowAnimation();
+    } else if (glowAnimationId) {
+      cancelAnimationFrame(glowAnimationId);
+    }
+  });
 
-function startGlowAnimation() {
-  if (!glowAnimationId) {
+  // Track mouse position with throttling
+  document.addEventListener('mousemove', throttle((e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  }, 16));
+
+  // Animate glow effect with smooth trailing
+  function animateGlow() {
+    if (!isPageVisible) return;
+    
+    // Smooth movement for glow effect
+    glowX += (mouseX - glowX) * 0.15;
+    glowY += (mouseY - glowY) * 0.15;
+    
+    if (cursorGlow) {
+      cursorGlow.style.left = glowX + 'px';
+      cursorGlow.style.top = glowY + 'px';
+    }
+    
     glowAnimationId = requestAnimationFrame(animateGlow);
   }
+
+  function startGlowAnimation() {
+    if (!glowAnimationId) {
+      glowAnimationId = requestAnimationFrame(animateGlow);
+    }
+  }
+
+  startGlowAnimation();
+
+  // Hover effects for interactive elements
+  const interactiveElements = document.querySelectorAll('button, a, .btn, input, textarea, .contact-card, .blog-card, .gallery-item, .chip');
+
+  interactiveElements.forEach(element => {
+    element.addEventListener('mouseenter', () => {
+      if (cursorGlow) cursorGlow.style.width = '60px';
+      if (cursorGlow) cursorGlow.style.height = '60px';
+      if (cursorGlow) cursorGlow.style.borderColor = 'rgba(108, 143, 255, 0.7)';
+      element.style.transform = 'scale(1.02)';
+    });
+    
+    element.addEventListener('mouseleave', () => {
+      if (cursorGlow) cursorGlow.style.width = '40px';
+      if (cursorGlow) cursorGlow.style.height = '40px';
+      if (cursorGlow) cursorGlow.style.borderColor = 'rgba(108, 143, 255, 0.5)';
+      element.style.transform = 'scale(1)';
+    });
+  });
+
+  // Hide glow when leaving window
+  document.addEventListener('mouseleave', () => {
+    if (cursorGlow) cursorGlow.style.opacity = '0';
+  });
+
+  document.addEventListener('mouseenter', () => {
+    if (cursorGlow) cursorGlow.style.opacity = '1';
+  });
+} else {
+  // Hide cursor glow on mobile
+  if (cursorGlow) {
+    cursorGlow.style.display = 'none';
+  }
 }
-
-startGlowAnimation();
-
-// Hover effects for interactive elements
-const interactiveElements = document.querySelectorAll('button, a, .btn, input, textarea, .contact-card, .blog-card, .gallery-item, .chip');
-
-interactiveElements.forEach(element => {
-  element.addEventListener('mouseenter', () => {
-    if (cursorGlow) cursorGlow.style.width = '60px';
-    if (cursorGlow) cursorGlow.style.height = '60px';
-    if (cursorGlow) cursorGlow.style.borderColor = 'rgba(108, 143, 255, 0.7)';
-    element.style.transform = 'scale(1.02)';
-  });
-  
-  element.addEventListener('mouseleave', () => {
-    if (cursorGlow) cursorGlow.style.width = '40px';
-    if (cursorGlow) cursorGlow.style.height = '40px';
-    if (cursorGlow) cursorGlow.style.borderColor = 'rgba(108, 143, 255, 0.5)';
-    element.style.transform = 'scale(1)';
-  });
-});
-
-// Hide glow when leaving window
-document.addEventListener('mouseleave', () => {
-  if (cursorGlow) cursorGlow.style.opacity = '0';
-});
-
-document.addEventListener('mouseenter', () => {
-  if (cursorGlow) cursorGlow.style.opacity = '1';
-});
 
 // Mobile menu toggle
 const navToggle = document.getElementById('nav-toggle');
@@ -182,17 +222,21 @@ window.addEventListener('scroll', function() {
   }
 });
 
-// Parallax effect on scroll with throttle
-const parallaxHandler = throttle(function() {
-  const scrolled = window.pageYOffset;
-  const parallaxElements = document.querySelectorAll('.hero::before, .hero::after, .cta-banner::before, .cta-banner::after');
-  
-  parallaxElements.forEach(el => {
-    el.style.transform = `translateY(${scrolled * 0.5}px)`;
-  });
-}, 16);
+// Parallax effect on scroll with throttle - DISABLED ON MOBILE
+const enableParallax = !isMobileDevice() && !isLowPerformanceDevice();
 
-window.addEventListener('scroll', parallaxHandler, { passive: true });
+if (enableParallax) {
+  const parallaxHandler = throttle(function() {
+    const scrolled = window.pageYOffset;
+    const parallaxElements = document.querySelectorAll('.hero::before, .hero::after, .cta-banner::before, .cta-banner::after');
+    
+    parallaxElements.forEach(el => {
+      el.style.transform = `translateY(${scrolled * 0.5}px)`;
+    });
+  }, 16);
+
+  window.addEventListener('scroll', parallaxHandler, { passive: true });
+}
 
 // Contact Form Handling
 const contactForm = document.getElementById('contactForm');
@@ -271,33 +315,38 @@ function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
-// Add ripple effect to buttons with proper cleanup
-document.querySelectorAll('.btn').forEach(button => {
-  button.addEventListener('click', function(e) {
-    const ripple = document.createElement('span');
-    const rect = this.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    const x = e.clientX - rect.left - size / 2;
-    const y = e.clientY - rect.top - size / 2;
-    
-    ripple.style.width = ripple.style.height = size + 'px';
-    ripple.style.left = x + 'px';
-    ripple.style.top = y + 'px';
-    ripple.classList.add('ripple');
-    
-    this.appendChild(ripple);
-    
-    const rippleTimeout = setTimeout(() => {
-      ripple.parentNode === this && ripple.remove();
-    }, 600);
-    
-    // Cleanup on button removal
-    ripple.addEventListener('transitionend', () => {
-      clearTimeout(rippleTimeout);
-      ripple.parentNode === this && ripple.remove();
+// Add ripple effect to buttons with proper cleanup - DISABLED ON MOBILE
+if (!isMobileDevice() && !isLowPerformanceDevice()) {
+  document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+      // Skip ripple on touch devices
+      if (e.pointerType === 'touch') return;
+      
+      const ripple = document.createElement('span');
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const x = e.clientX - rect.left - size / 2;
+      const y = e.clientY - rect.top - size / 2;
+      
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+      ripple.classList.add('ripple');
+      
+      this.appendChild(ripple);
+      
+      const rippleTimeout = setTimeout(() => {
+        ripple.parentNode === this && ripple.remove();
+      }, 600);
+      
+      // Cleanup on button removal
+      ripple.addEventListener('transitionend', () => {
+        clearTimeout(rippleTimeout);
+        ripple.parentNode === this && ripple.remove();
+      });
     });
   });
-});
+}
 
 // ============================================
 // ANALOG CLOCK WITH DATE
