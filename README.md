@@ -1,176 +1,177 @@
-A modern, responsive portfolio website showcasing full-stack development skills with beautiful animations, dark/light mode toggle, and mobile-first design.
+Website portofolio modern dan responsif yang menampilkan keterampilan full-stack development dengan animasi indah, toggle mode gelap/terang, dan desain mobile-first.
 
-## ✨ Features
+## ✨ Fitur
 
-- **Responsive Design** — Optimized for desktop, tablet, and mobile devices
-- **Dark & Light Mode** — Theme toggle with localStorage persistence
-- **Smooth Animations** — CSS animations and transitions for enhanced UX
-- **Mobile Bottom Navigation** — Floating nav bar on mobile (≤768px)
-- **Tech Slider** — Interactive carousel showcasing tech stack
-- **Analog Clock Widget** — Live clock with current date display
-- **Contact Form** — Functional form with success feedback
-- **Custom Cursor Glow** — Interactive cursor effects (desktop)
-- **SEO Friendly** — Semantic HTML structure
-- **Fast Loading** — Optimized images and lazy loading
+- **Desain Responsif** — Dioptimalkan untuk desktop, tablet, dan perangkat mobile
+- **Mode Gelap & Terang** — Toggle tema dengan persistensi localStorage
+- **Animasi Halus** — Animasi CSS dan transisi untuk UX yang lebih baik
+- **Navigasi Mobile Bottom** — Navbar floating di mobile (≤768px)
+- **Tech Slider** — Carousel interaktif yang menampilkan tech stack
+- **Widget Jam Analog** — Jam live dengan tampilan tanggal saat ini
+- **Form Kontak** — Form fungsional dengan feedback sukses
+- **Custom Cursor Glow** — Efek cursor interaktif (desktop)
+- **Ramah SEO** — Struktur HTML semantik
+- **Loading Cepat** — Gambar teroptimasi dan lazy loading
 
-## 📁 Project Structure
+## 📁 Struktur Proyek
 
 ```
 .
-├── index.html          # Home page with hero section
-├── about.html          # About page with timeline & skills
-├── gallery.html        # Project gallery with filters
-├── contact.html        # Contact form page
-├── 404.html            # 404 error page
+├── index.html          # Halaman home dengan hero section
+├── about.html          # Halaman about dengan timeline & skills
+├── gallery.html        # Gallery proyek dengan filter
+├── contact.html        # Halaman form kontak
+├── 404.html            # Halaman error 404
 ├── css/
-│   └── style.css       # Main stylesheet (5000+ lines, mobile-first)
+│   └── style.css       # Main stylesheet (5000+ baris, mobile-first)
 ├── js/
-│   └── script.js       # All interactive functionality
-├── assets/             # Images & media
+│   └── script.js       # Semua fungsi interaktif
+├── assets/             # Gambar & media
 ├── data/
-│   ├── articles.json   # Blog/article data
-│   ├── projects.json   # Project showcase data
-│   └── skills.json     # Skills & expertise data
-└── README.md           # This file
+│   ├── articles.json   # Data artikel/blog
+│   ├── projects.json   # Data showcase proyek
+│   └── skills.json     # Data skills & expertise
+└── README.md           # File ini
 ```
 
-## 🎨 Design & Colors
+## 🎨 Desain & Warna
 
-### Dark Mode (Default)
-- **Background**: `#080810` (deep dark)
-- **Surface**: `#0f0f1a` (slightly lighter)
-- **Primary Accent**: `#6c8fff` (soft blue)
-- **Secondary Accent**: `#f0c060` (warm gold)
+### Mode Gelap (Default)
+- **Background**: `#080810` (gelap dalam)
+- **Surface**: `#0f0f1a` (sedikit lebih terang)
+- **Primary Accent**: `#6c8fff` (biru lembut)
+- **Secondary Accent**: `#f0c060` (emas hangat)
 - **Text Primary**: `#e8e8f0` (off-white)
 
-### Light Mode
-- **Background**: `#fafaf8` (warm white)
-- **Primary Accent**: `#3d5af1` (stronger blue)
-- **Secondary Accent**: `#d4900a` (darker gold)
-- **Text Primary**: `#1a1a2e` (dark)
+### Mode Terang
+- **Background**: `#fafaf8` (putih hangat)
+- **Primary Accent**: `#3d5af1` (biru lebih kuat)
+- **Secondary Accent**: `#d4900a` (emas lebih gelap)
+- **Text Primary**: `#1a1a2e` (gelap)
 
-## 🚀 Getting Started
+## 🚀 Memulai
 
-### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- No build process required — vanilla HTML/CSS/JS
+### Prasyarat
+- Browser web modern (Chrome, Firefox, Safari, Edge)
+- Tidak ada build process yang diperlukan — HTML/CSS/JS vanilla
 
-### Installation & Local Development
+### Instalasi & Pengembangan Lokal
 
-1. **Clone the repository**
+1. **Clone repository**
    ```bash
    git clone https://github.com/0xEGUEN/0xEGUEN.github.io.git
    cd 0xEGUEN.github.io
    ```
 
-2. **Open in browser**
-   - Simply open `index.html` in your browser
-   - Or use a local server:
+2. **Buka di browser**
+   - Cukup buka `index.html` di browser Anda
+   - Atau gunakan local server:
      ```bash
      # Python 3
      python -m http.server 8000
      
-     # Node.js (with http-server)
+     # Node.js (dengan http-server)
      npx http-server
      ```
 
-3. **View at** `http://localhost:8000`
+3. **Akses di** `http://localhost:8000`
 
-## 📱 Features Breakdown
+## 📱 Penjelasan Fitur
 
-### Sections
+### Bagian-Bagian
 
-| Section | Description |
-|---------|-------------|
-| **Hero** | Eye-catching introduction with CTA buttons |
-| **Services** | 3-column service cards (Web Dev, Performance, API) |
-| **Skills** | Interactive tech slider with 15+ technologies |
-| **Gallery** | Filterable project showcase |
-| **About** | Personal background, timeline, expertise |
-| **Contact** | Contact form with validation |
+| Bagian | Deskripsi |
+|--------|-----------|
+| **Hero** | Pengenalan menarik dengan tombol CTA |
+| **Services** | 3-kolom service cards (Web Dev, Performance, API) |
+| **Skills** | Interactive tech slider dengan 15+ teknologi |
+| **Gallery** | Showcase proyek dengan filter |
+| **About** | Latar belakang pribadi, timeline, expertise |
+| **Contact** | Form kontak dengan validasi |
 | **Footer** | Links, social, copyright |
 
-### Interactive Elements
+### Elemen Interaktif
 
-- **Theme Toggle** — Fixed button (desktop) / Bottom nav (mobile)
-- **Mobile Menu** — Hamburger button opens overlay nav
-- **Scroll Animations** — Elements fade/slide on scroll
+- **Theme Toggle** — Tombol fixed (desktop) / Bottom nav (mobile)
+- **Mobile Menu** — Tombol hamburger membuka nav overlay
+- **Scroll Animations** — Elemen fade/slide saat scroll
 - **Hover Effects** — Cards lift, links underline
-- **Parallax** — Hero gradient moves with scroll
-- **Form Validation** — Contact form with feedback
+- **Parallax** — Hero gradient bergerak dengan scroll
+- **Form Validation** — Form kontak dengan feedback
 
-## 🛠️ Technologies Used
+## 🛠️ Teknologi yang Digunakan
 
 ### Frontend
-- **HTML5** — Semantic structure
-- **CSS3** — Flexbox, Grid, custom properties, animations
-- **JavaScript (Vanilla)** — No frameworks, pure DOM manipulation
+- **HTML5** — Struktur semantik
+- **CSS3** — Flexbox, Grid, custom properties, animasi
+- **JavaScript (Vanilla)** — Tanpa framework, DOM manipulation murni
 
-### Libraries & Fonts
+### Library & Font
 - Google Fonts: *DM Serif Display*, *Inconsolata*, *Inter*, *Plus Jakarta Sans*, *DM Mono*
 - Material Symbols (icons)
 
-## 📝 Customization
+## 📝 Kustomisasi
 
-### Change Colors
-Edit CSS custom properties in `style.css`:
+### Ubah Warna
+Edit CSS custom properties di `style.css`:
 ```css
 :root {
-  --accent-primary: #6c8fff;  /* Change primary color */
+  --accent-primary: #6c8fff;  /* Ubah warna primary */
   --accent-secondary: #f0c060;
   /* ... */
 }
 ```
 
-### Update Content
-- Edit HTML files directly
-- Update JSON files in `data/` folder for projects/skills
-- Replace images in `assets/` folder
+### Update Konten
+- Edit file HTML langsung
+- Update JSON files di folder `data/` untuk projects/skills
+- Ganti gambar di folder `assets/`
 
-### Modify Animations
-- Find `@keyframes` in `style.css`
-- Adjust timing and transforms
+### Modifikasi Animasi
+- Cari `@keyframes` di `style.css`
+- Sesuaikan timing dan transforms
 
-## 📴 Offline Support
+## 📴 Dukungan Offline
 
-This site works offline (no external API calls). All content is static HTML/CSS/JS.
+Website ini bekerja offline (tidak ada API calls eksternal). Semua konten adalah static HTML/CSS/JS.
 
-## 🐛 Known Issues & Fixes
+## 🐛 Masalah Diketahui & Perbaikan
 
-### Mobile Navigation
-- Hamburger menu properly displays on screens ≤768px
-- Bottom nav auto-hides on scroll down, shows on scroll up
+### Navigasi Mobile
+- Menu hamburger tampi dengan benar di layar ≤768px
+- Bottom nav auto-hide saat scroll down, tampil saat scroll up
 
 ### Cursor Styles
-- Buttons & links show `pointer` cursor
-- Text inputs show `text` cursor
-- Custom glow effect on hover (desktop only)
+- Tombol & links menampilkan `pointer` cursor
+- Text inputs menampilkan `text` cursor
+- Custom glow effect on hover (desktop saja)
 
 ## 🔄 Git Workflow
 
 ```bash
-# Make changes
+# Buat perubahan
 git add .
-git commit -m "feat: add new feature"
+git commit -m "feat: tambah fitur baru"
 
-# Push to GitHub Pages
+# Push ke GitHub Pages
 git push origin main
 ```
 
-Site automatically deploys on push to `origin/main`.
+Website secara otomatis deploy saat push ke `origin/main`.
 
-## 📊 Performance
+## 📊 Performa
 
 - **Lighthouse Scores**: 90+ (Performance, Accessibility, Best Practices)
 - **Load Time**: <2s on 4G
 - **FCP**: <1s
 - **LCP**: <2.5s
 
-## 🔐 Privacy
+## 🔐 Privasi
 
-- No cookies or tracking
-- No external API calls
-- All data stored locally in browser (localStorage for theme)
+- Tidak ada cookies atau tracking
+- Tidak ada API calls eksternal
+- Semua data disimpan lokal di browser (localStorage untuk tema)
+
 ---
 
-**Made with ❤️ and carefully crafted code.**
+**Dibuat dengan ❤️ dan kode yang dipikirkan dengan matang.**
