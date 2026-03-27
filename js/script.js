@@ -27,6 +27,45 @@ const isLowPerformanceDevice = () => {
   return false;
 };
 
+// Detect zoom state to disable expensive animations during pinch-zoom
+let isZooming = false;
+let zoomTimeout = null;
+
+const detectZoom = () => {
+  if (!isMobileDevice()) return;
+  
+  isZooming = true;
+  document.documentElement.classList.add('zoomed');
+  
+  clearTimeout(zoomTimeout);
+  zoomTimeout = setTimeout(() => {
+    isZooming = false;
+    document.documentElement.classList.remove('zoomed');
+  }, 500);
+};
+
+// Detect zoom via gesture handlers
+if (isMobileDevice()) {
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      detectZoom();
+    }
+  }, { passive: true });
+  
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2) {
+      detectZoom();
+    }
+  }, { passive: true });
+  
+  // Also detect zoom via wheel event
+  document.addEventListener('wheel', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      detectZoom();
+    }
+  }, { passive: true });
+}
+
 // ============================================
 // LOADING SCREEN & THEME MANAGEMENT
 // ============================================
@@ -212,15 +251,17 @@ if (navToggle && navLinks) {
   });
 }
 
-// Navbar shadow on scroll
+// Navbar shadow on scroll - use adaptive throttle based on zoom state
 const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', function() {
+const navbarScroller = throttle(function() {
   if (window.scrollY > 0) {
     navbar.classList.add('scrolled');
   } else {
     navbar.classList.remove('scrolled');
   }
-});
+}, 16);
+
+window.addEventListener('scroll', navbarScroller, { passive: true });
 
 // Parallax effect on scroll with throttle - DISABLED ON MOBILE
 const enableParallax = !isMobileDevice() && !isLowPerformanceDevice();
@@ -502,24 +543,28 @@ function initializeClock() {
     }
   }
   
-  // Listen for theme changes to update clock colors
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.attributeName === 'class') {
-        drawClock();  // Redraw when theme changes
-      }
-    });
-  });
-  
-  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-  
+  // Listen for theme changes - optimized without MutationObserver
   updateDate();
   drawClock();
   
-  // Update clock every second and stop on page hidden
+  // Track theme state to avoid unnecessary redraws
+  let lastTheme = document.body.classList.contains('light-mode');
+  
+  // Update clock every second and stop on page hidden or during zoom
   function startClockUpdate() {
     clockUpdateInterval = setInterval(() => {
-      if (!document.hidden) {
+      // Skip updates during zoom to prevent jank
+      if (document.hidden || isZooming) {
+        return;
+      }
+      
+      // Check if theme changed and redraw
+      const currentTheme = document.body.classList.contains('light-mode');
+      if (currentTheme !== lastTheme) {
+        lastTheme = currentTheme;
+        drawClock();
+      } else {
+        // Just update the clock display
         drawClock();
       }
     }, 1000);
@@ -532,9 +577,24 @@ function initializeClock() {
     if (document.hidden) {
       if (clockUpdateInterval) clearInterval(clockUpdateInterval);
     } else {
-      startClockUpdate();
+      if (!isZooming) startClockUpdate();
     }
   });
+  
+  // Pause clock update during zoom gesture
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2 && clockUpdateInterval) {
+      clearInterval(clockUpdateInterval);
+    }
+  }, { passive: true });
+  
+  document.addEventListener('touchend', (e) => {
+    if (e.touches.length < 2 && !clockUpdateInterval && !document.hidden) {
+      setTimeout(() => {
+        if (!isZooming) startClockUpdate();
+      }, 600);
+    }
+  }, { passive: true });
 }
 
 // Initialize clock when DOM is ready

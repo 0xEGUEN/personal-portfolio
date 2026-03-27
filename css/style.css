@@ -729,6 +729,8 @@ textarea {
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   animation: slideInUp 0.6s ease-out backwards;
+  will-change: transform;
+  contain: layout style paint;
 }
 
 .service-card::before {
@@ -831,6 +833,8 @@ textarea {
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  will-change: transform;
+  contain: layout style paint;
 }
 
 .project-card:hover {
@@ -1477,6 +1481,7 @@ textarea {
   cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+  will-change: transform;
 }
 
 .gallery-item img {
@@ -2771,6 +2776,7 @@ textarea.input {
 .btn {
   position: relative;
   overflow: hidden;
+  will-change: transform;
 }
 
 .btn::after {
@@ -3242,6 +3248,15 @@ button, a, input, textarea {
   .navbar {
     backdrop-filter: none;
     background: rgba(8, 8, 16, 0.95);
+    will-change: auto;
+  }
+  
+  /* Disable will-change during zoom to prevent jank */
+  html.zoomed .btn,
+  html.zoomed .service-card,
+  html.zoomed .project-card,
+  html.zoomed .gallery-item {
+    will-change: auto !important;
   }
   
   .form-card {
@@ -3251,11 +3266,16 @@ button, a, input, textarea {
   
   /* Reduce transitions on mobile */
   * {
-    transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease !important;
+    transition: background-color 100ms ease, border-color 100ms ease, color 100ms ease !important;
   }
   
   button, a, input, textarea {
-    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease !important;
+    transition: background-color 75ms ease, border-color 75ms ease, color 75ms ease !important;
+  }
+  
+  /* Optimize for zoom - reduce motion during pinch */
+  html.zoomed * {
+    transition: none !important;
   }
   
   /* Disable gradient animations on mobile */
