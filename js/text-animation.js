@@ -8,6 +8,7 @@ const animate = anime.animate || (() => {});
 const stagger = anime.stagger || (() => 0);
 const text = anime.text || { split: () => ({ addEffect: () => {} }) };
 const splitText = text.split || (() => ({ addEffect: () => {} }));
+const isCompactMotion = () => window.matchMedia('(max-width: 720px)').matches || window.matchMedia('(pointer: coarse)').matches;
 
 let heroSplitStarted = false;
 
@@ -27,13 +28,17 @@ const initHeroSplitAnimation = async () => {
     }
   }
 
+  const compactMotion = isCompactMotion();
+
   const split = splitText(heroTitle, {
     lines: true,
     words: true,
-    chars: false,
+    chars: !compactMotion,
   });
 
-  split.addEffect(({ lines, words }) => {
+  split.addEffect(({ lines, words, chars }) => {
+    const charTargets = chars || [];
+
     lines.forEach((line) => {
       line.style.overflow = 'hidden';
       line.style.display = 'block';
@@ -42,18 +47,50 @@ const initHeroSplitAnimation = async () => {
     words.forEach((word) => {
       word.style.display = 'inline-block';
       word.style.willChange = 'transform, opacity';
+      word.style.webkitTextFillColor = 'currentColor';
+      word.style.color = 'inherit';
     });
 
-    return animate(words, {
+    charTargets.forEach((char) => {
+      char.style.display = 'inline-block';
+      char.style.willChange = 'transform, opacity';
+      char.style.webkitTextFillColor = 'currentColor';
+      char.style.color = 'inherit';
+    });
+
+    if (compactMotion) {
+      return animate(words, {
+        opacity: { from: 0 },
+        y: { from: '0.45em' },
+        duration: 1450,
+        delay: stagger(90),
+        ease: 'out(2.5)',
+      });
+    }
+
+    return animate([lines, words, charTargets], {
       opacity: { from: 0 },
-      y: { from: '1.2em' },
+      y: { from: '0.9em' },
       rotate: { from: -6 },
       scale: { from: 0.98 },
       duration: 1100,
-      delay: stagger(60),
+      delay: stagger(24),
       ease: 'out(4)',
     });
   });
+
+  if (compactMotion) {
+    const heroText = heroTitle.closest('.hero-text');
+    if (heroText) {
+      animate(heroText.querySelectorAll('.hero-label, .hero-desc, .hero-actions, .hero-stat-single'), {
+        opacity: { from: 0 },
+        y: { from: 12 },
+        duration: 900,
+        delay: stagger(80),
+        ease: 'out(3)',
+      });
+    }
+  }
 };
 
 const loadingScreen = document.getElementById('loadingScreen');
