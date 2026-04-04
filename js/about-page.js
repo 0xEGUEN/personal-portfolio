@@ -10,8 +10,13 @@ const { useEffect, useRef, useState } = React;
 const createElement = React.createElement || (() => null);
 const animate = anime.animate || (() => {});
 const stagger = anime.stagger || (() => 0);
+const utils = anime.utils || {};
 const text = anime.text || { split: () => ({ addEffect: () => {} }) };
 const splitText = text.split || (() => ({ addEffect: () => {} }));
+const setElementStyles = utils.set || ((element, styles) => Object.assign(element.style, styles));
+const getElementStyle = utils.get || ((element, property) => getComputedStyle(element)[property]);
+const pickAccentColor = utils.randomPick || ((palette) => palette[Math.floor(Math.random() * palette.length)]);
+const paragraphColorCache = new WeakMap();
 
 const summaryStats = [
   {
@@ -98,6 +103,85 @@ function waitForLoadingScreen() {
 
 const motionReadyPromise = waitForLoadingScreen();
 
+function animateAboutParagraphs() {
+  const paragraphs = document.querySelectorAll('.page-header .section-subtitle, .about-subtitle, .about-lead, .about-desc');
+  if (!paragraphs.length) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  paragraphs.forEach((paragraph) => {
+    if (paragraph.dataset.aboutParagraphAnimated === 'true') return;
+    paragraph.dataset.aboutParagraphAnimated = 'true';
+
+    motionReadyPromise.then(() => {
+      const runSplit = () => {
+        const split = splitText(paragraph, {
+          lines: true,
+          words: true,
+          chars: true,
+        });
+
+        split.addEffect(({ lines, words, chars }) => {
+          lines.forEach((line) => {
+            line.style.overflow = 'hidden';
+            line.style.display = 'block';
+          });
+
+          words.forEach((word) => {
+            word.style.display = 'inline-block';
+            word.style.willChange = 'transform, opacity';
+          });
+
+          chars.forEach((char) => {
+            char.style.display = 'inline-block';
+            char.style.willChange = 'transform, opacity';
+          });
+
+          return animate(lines, {
+            y: ['50%', '-50%'],
+            loop: true,
+            alternate: true,
+            delay: stagger(400),
+            ease: 'inOutQuad',
+          });
+        });
+
+        split.addEffect((splitState) => {
+          const colors = paragraphColorCache.get(paragraph) || [];
+
+          splitState.words.forEach((word, index) => {
+            const savedColor = colors[index];
+            if (savedColor) {
+              setElementStyles(word, { color: savedColor });
+            }
+
+            word.addEventListener('pointerenter', () => {
+              animate(word, {
+                color: pickAccentColor(['#FF4B4B', '#FFCC2A', '#B7FF54', '#57F695']),
+                duration: 250,
+              });
+            });
+          });
+
+          return () => {
+            splitState.words.forEach((word, index) => {
+              colors[index] = getElementStyle(word, 'color');
+            });
+
+            paragraphColorCache.set(paragraph, colors);
+          };
+        });
+      };
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(runSplit).catch(runSplit);
+      } else {
+        runSplit();
+      }
+    });
+  });
+}
+
 function animateAboutHeader() {
   const headerTitle = document.querySelector('.js-about-title');
   if (!headerTitle) return;
@@ -108,31 +192,47 @@ function animateAboutHeader() {
 
   const runAnimation = () => {
     const split = splitText(headerTitle, {
+      lines: true,
       words: true,
-      chars: false,
+      chars: true,
     });
 
-    split.words.forEach((word) => {
-      word.style.display = 'inline-block';
-      word.style.willChange = 'transform, opacity';
+    split.addEffect(({ lines, words, chars }) => {
+      lines.forEach((line) => {
+        line.style.overflow = 'hidden';
+        line.style.display = 'block';
+      });
+
+      words.forEach((word) => {
+        word.style.display = 'inline-block';
+        word.style.willChange = 'transform, opacity';
+      });
+
+      chars.forEach((char) => {
+        char.style.display = 'inline-block';
+        char.style.willChange = 'transform, opacity';
+      });
+
+      return animate([lines, words, chars], {
+        opacity: { from: 0 },
+        y: { from: '0.9em' },
+        rotate: { from: -4 },
+        scale: { from: 0.98 },
+        duration: 900,
+        delay: stagger(24),
+        ease: 'out(4)',
+      });
     });
 
-    split.addEffect(({ words }) => animate(words, {
-      opacity: { from: 0 },
-      y: { from: '1em' },
-      rotate: { from: -4 },
-      duration: 900,
-      delay: stagger(60),
-      ease: 'out(4)',
-    }));
-
-    animate(document.querySelectorAll('.page-header .section-label, .page-header .section-subtitle'), {
+    animate(document.querySelectorAll('.page-header .section-label'), {
       opacity: { from: 0 },
       y: { from: 14 },
       duration: 700,
       delay: stagger(100),
       ease: 'out(3)',
     });
+
+    animateAboutParagraphs();
   };
 
   motionReadyPromise.then(() => {

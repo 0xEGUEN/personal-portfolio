@@ -1905,14 +1905,16 @@ body.light-mode .gallery-link:hover {
 
 .about-spotlight__layout {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 24px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  gap: 28px;
   position: relative;
   z-index: 1;
+  align-items: stretch;
 }
 
 .about-spotlight__card {
   position: relative;
+  min-height: 100%;
   overflow: hidden;
   padding: 28px;
   border-radius: 24px;
@@ -1945,20 +1947,20 @@ body.light-mode .gallery-link:hover {
 
 .about-spotlight__title {
   font-family: var(--font-serif);
-  font-size: clamp(28px, 3vw + 0.75rem, 44px);
-  line-height: 1.08;
+  font-size: clamp(26px, 2.8vw + 0.65rem, 42px);
+  line-height: 1.05;
   letter-spacing: -0.03em;
   color: var(--text-primary);
-  margin-bottom: 16px;
-  max-width: 12ch;
+  margin-bottom: 14px;
+  max-width: 16ch;
 }
 
 .about-spotlight__summary {
   color: var(--text-secondary);
   font-size: 16px;
   line-height: 1.75;
-  margin-bottom: 22px;
-  max-width: 54ch;
+  margin-bottom: 20px;
+  max-width: 50ch;
 }
 
 .about-spotlight__stats {
@@ -2011,6 +2013,7 @@ body.light-mode .gallery-link:hover {
 
 .about-spotlight__panel {
   height: 100%;
+  min-height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -2238,10 +2241,15 @@ body.light-mode .gallery-link:hover {
 
   .about-spotlight__title {
     font-size: 1.9rem;
+    max-width: none;
   }
 
   .about-spotlight__stats {
     grid-template-columns: 1fr;
+  }
+
+  .about-spotlight__summary {
+    max-width: none;
   }
 
   .about-spotlight__focus-title {
