@@ -57,7 +57,7 @@
             <section class="page-header">
                 <div class="container">
                     <span class="section-label">About</span>
-                    <h1 class="hero-title" style="font-size: 3.5rem; margin: 20px 0;">About <span style="background: linear-gradient(135deg, #4a9eff, #d9e1c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Me</span></h1>
+                    <h1 class="hero-title js-about-title">About Me</h1>
                     <p class="section-subtitle" style="font-size: 1.2rem;">Full-stack developer, designer, and problem-solver with a passion for creating beautiful digital experiences.</p>
                 </div>
             </section>
@@ -72,6 +72,8 @@
                         </div>
                         <div class="date-display" id="dateDisplay">Mar 15, 2026</div>
                     </div>
+
+                    <div id="aboutSpotlightRoot"></div>
 
                     <div class="about-intro">
                         <div class="about-img">
@@ -259,6 +261,10 @@
         </button>
     </nav>
 
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@4.1.4/lib/anime.umd.js"></script>
+    <script src="js/about-page.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
