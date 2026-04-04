@@ -1,76 +1,59 @@
-// ============================================
-// DEVICE DETECTION & OPTIMIZATION
-// ============================================
-
-// Detect if device is mobile or touch-enabled
 const isMobileDevice = () => {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
          (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
 };
-
 const isTouchDevice = () => {
   return (('ontouchstart' in window) || 
           (navigator.maxTouchPoints > 0) || 
           (navigator.msMaxTouchPoints > 0));
 };
-
 const isLowPerformanceDevice = () => {
-  // Check for low RAM devices (less than 4GB estimated)
   if (navigator.deviceMemory && navigator.deviceMemory <= 4) {
     return true;
   }
-  // Check for slow connection
   if (navigator.connection && navigator.connection.effectiveType) {
-    return navigator.connection.effectiveType === '4g' || 
+    return navigator.connection.saveData === true ||
+           navigator.connection.effectiveType === 'slow-2g' ||
+           navigator.connection.effectiveType === '2g' ||
            navigator.connection.effectiveType === '3g';
   }
   return false;
 };
-
-// Detect zoom state to disable expensive animations during pinch-zoom
+const shouldUseDesktopEffects = () => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+  return window.matchMedia('(hover: hover)').matches &&
+         window.matchMedia('(pointer: fine)').matches &&
+         !isLowPerformanceDevice();
+};
 let isZooming = false;
 let zoomTimeout = null;
-
 const detectZoom = () => {
   if (!isMobileDevice()) return;
-  
   isZooming = true;
   document.documentElement.classList.add('zoomed');
-  
   clearTimeout(zoomTimeout);
   zoomTimeout = setTimeout(() => {
     isZooming = false;
     document.documentElement.classList.remove('zoomed');
   }, 500);
 };
-
-// Detect zoom via gesture handlers
 if (isMobileDevice()) {
   document.addEventListener('touchstart', (e) => {
     if (e.touches.length === 2) {
       detectZoom();
     }
   }, { passive: true });
-  
   document.addEventListener('touchmove', (e) => {
     if (e.touches.length === 2) {
       detectZoom();
     }
   }, { passive: true });
-  
-  // Also detect zoom via wheel event
   document.addEventListener('wheel', (e) => {
     if (e.ctrlKey || e.metaKey) {
       detectZoom();
     }
   }, { passive: true });
 }
-
-// ============================================
-// LOADING SCREEN & THEME MANAGEMENT
-// ============================================
-
-// Loading Screen Handler
 window.addEventListener('load', function() {
   const loadingScreen = document.getElementById('loadingScreen');
   if (loadingScreen) {
@@ -79,12 +62,8 @@ window.addEventListener('load', function() {
     }, 800);
   }
 });
-
-// Theme Toggle Functionality
 const themeToggle = document.getElementById('themeToggle');
 const htmlElement = document.documentElement;
-
-// Check for saved theme preference or default to dark mode
 const currentTheme = localStorage.getItem('theme') || 'dark-mode';
 if (currentTheme === 'light-mode') {
   document.body.classList.add('light-mode');
@@ -93,7 +72,6 @@ if (currentTheme === 'light-mode') {
   document.body.classList.remove('light-mode');
   updateThemeIcon('light_mode');
 }
-
 function updateThemeIcon(iconName) {
   if (themeToggle) {
     const icon = themeToggle.querySelector('.icon');
@@ -102,27 +80,18 @@ function updateThemeIcon(iconName) {
     }
   }
 }
-
 if (themeToggle) {
   themeToggle.addEventListener('click', function() {
     document.body.classList.toggle('light-mode');
     themeToggle.classList.add('rotating');
-    
     const isLightMode = document.body.classList.contains('light-mode');
     localStorage.setItem('theme', isLightMode ? 'light-mode' : 'dark-mode');
     updateThemeIcon(isLightMode ? 'dark_mode' : 'light_mode');
-    
     setTimeout(() => {
       themeToggle.classList.remove('rotating');
     }, 600);
   });
 }
-
-// ============================================
-// SCROLL ANIMATIONS WITH STAGGER
-// ============================================
-
-// Throttle function for performance optimization
 function throttle(func, limit) {
   let inThrottle;
   return function(...args) {
@@ -133,32 +102,21 @@ function throttle(func, limit) {
     }
   };
 }
-
-// Page visibility API to stop animations on tab hidden
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    // pause animations
     document.body.style.animationPlayState = 'paused';
   } else {
-    // resume animations
     document.body.style.animationPlayState = 'running';
   }
 });
-
-// Custom Cursor Glow Effect - DISABLED ON MOBILE/TOUCH DEVICES
 const cursor = document.getElementById('cursor');
 const cursorGlow = document.getElementById('cursor-glow');
-
-// Only initialize cursor glow on desktop devices
-const shouldEnableCursorGlow = !isMobileDevice() && !isTouchDevice() && !isLowPerformanceDevice() && cursorGlow;
-
+const shouldEnableCursorGlow = shouldUseDesktopEffects() && cursorGlow;
 if (shouldEnableCursorGlow) {
   let mouseX = 0, mouseY = 0;
   let glowX = 0, glowY = 0;
   let glowAnimationId = null;
   let isPageVisible = true;
-
-  // Track visibility changes
   document.addEventListener('visibilitychange', () => {
     isPageVisible = !document.hidden;
     if (isPageVisible) {
@@ -167,40 +125,27 @@ if (shouldEnableCursorGlow) {
       cancelAnimationFrame(glowAnimationId);
     }
   });
-
-  // Track mouse position with throttling
   document.addEventListener('mousemove', throttle((e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
   }, 16));
-
-  // Animate glow effect with smooth trailing
   function animateGlow() {
     if (!isPageVisible) return;
-    
-    // Smooth movement for glow effect
     glowX += (mouseX - glowX) * 0.15;
     glowY += (mouseY - glowY) * 0.15;
-    
     if (cursorGlow) {
       cursorGlow.style.left = glowX + 'px';
       cursorGlow.style.top = glowY + 'px';
     }
-    
     glowAnimationId = requestAnimationFrame(animateGlow);
   }
-
   function startGlowAnimation() {
     if (!glowAnimationId) {
       glowAnimationId = requestAnimationFrame(animateGlow);
     }
   }
-
   startGlowAnimation();
-
-  // Hover effects for interactive elements
   const interactiveElements = document.querySelectorAll('button, a, .btn, input, textarea, .contact-card, .blog-card, .gallery-item, .chip');
-
   interactiveElements.forEach(element => {
     element.addEventListener('mouseenter', () => {
       if (cursorGlow) cursorGlow.style.width = '60px';
@@ -208,7 +153,6 @@ if (shouldEnableCursorGlow) {
       if (cursorGlow) cursorGlow.style.borderColor = 'rgba(108, 143, 255, 0.7)';
       element.style.transform = 'scale(1.02)';
     });
-    
     element.addEventListener('mouseleave', () => {
       if (cursorGlow) cursorGlow.style.width = '40px';
       if (cursorGlow) cursorGlow.style.height = '40px';
@@ -216,33 +160,24 @@ if (shouldEnableCursorGlow) {
       element.style.transform = 'scale(1)';
     });
   });
-
-  // Hide glow when leaving window
   document.addEventListener('mouseleave', () => {
     if (cursorGlow) cursorGlow.style.opacity = '0';
   });
-
   document.addEventListener('mouseenter', () => {
     if (cursorGlow) cursorGlow.style.opacity = '1';
   });
 } else {
-  // Hide cursor glow on mobile
   if (cursorGlow) {
     cursorGlow.style.display = 'none';
   }
 }
-
-// Mobile menu toggle
 const navToggle = document.getElementById('nav-toggle');
 const navLinks = document.getElementById('nav-links');
-
 if (navToggle && navLinks) {
   navToggle.addEventListener('click', function() {
     navToggle.classList.toggle('is-active');
     navLinks.classList.toggle('open');
   });
-
-  // Close menu when clicking on a link
   navLinks.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', function() {
       navToggle.classList.remove('is-active');
@@ -250,8 +185,6 @@ if (navToggle && navLinks) {
     });
   });
 }
-
-// Navbar shadow on scroll - use adaptive throttle based on zoom state
 const navbar = document.getElementById('navbar');
 const navbarScroller = throttle(function() {
   if (window.scrollY > 0) {
@@ -260,56 +193,54 @@ const navbarScroller = throttle(function() {
     navbar.classList.remove('scrolled');
   }
 }, 16);
-
 window.addEventListener('scroll', navbarScroller, { passive: true });
-
-// Parallax effect on scroll with throttle - DISABLED ON MOBILE
-const enableParallax = !isMobileDevice() && !isLowPerformanceDevice();
-
+const enableParallax = shouldUseDesktopEffects();
 if (enableParallax) {
-  const parallaxHandler = throttle(function() {
-    const scrolled = window.pageYOffset;
-    const parallaxElements = document.querySelectorAll('.hero::before, .hero::after, .cta-banner::before, .cta-banner::after');
-    
-    parallaxElements.forEach(el => {
-      el.style.transform = `translateY(${scrolled * 0.5}px)`;
-    });
-  }, 16);
-
-  window.addEventListener('scroll', parallaxHandler, { passive: true });
+  const parallaxSections = [
+    {
+      element: document.querySelector('.hero'),
+      variableName: '--hero-parallax-y',
+      strength: 0.12,
+    },
+    {
+      element: document.querySelector('.cta-banner'),
+      variableName: '--cta-parallax-y',
+      strength: 0.08,
+    },
+  ].filter((section) => section.element);
+  if (parallaxSections.length) {
+    const parallaxHandler = throttle(function() {
+      const scrolled = window.pageYOffset;
+      parallaxSections.forEach(({ element, variableName, strength }) => {
+        element.style.setProperty(variableName, `${scrolled * strength}px`);
+      });
+    }, 16);
+    parallaxHandler();
+    window.addEventListener('scroll', parallaxHandler, { passive: true });
+  }
 }
-
-// Contact Form Handling
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
   contactForm.addEventListener('submit', async function(e) {
     e.preventDefault();
-    
     // Get form values
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const subject = document.getElementById('subject').value.trim();
     const message = document.getElementById('message').value.trim();
-    
-    // Form validation
     if (!name || !email || !subject || !message) {
       showAlert('Please fill in all fields.', 'error');
       return;
     }
-    
     if (!isValidEmail(email)) {
       showAlert('Please enter a valid email address.', 'error');
       return;
     }
-    
-    // Disable submit button
     const submitBtn = contactForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
-    
     try {
-      // Send form data using FormSubmit.co (free service)
       const response = await fetch('https://formsubmit.co/ajax/adwarahmant@gmail.com', {
         method: 'POST',
         headers: {
@@ -318,7 +249,6 @@ if (contactForm) {
         },
         body: JSON.stringify({ name, email, subject, message })
       });
-      
       if (response.ok) {
         showAlert('✓ Message sent successfully! I\'ll get back to you soon.', 'success');
         contactForm.reset();
@@ -337,49 +267,38 @@ if (contactForm) {
     }
   });
 }
-
 function showAlert(message, type) {
   const alertEl = document.getElementById('successAlert');
   if (alertEl) {
     alertEl.textContent = message;
     alertEl.className = `alert alert-${type}`;
     alertEl.classList.add('show');
-    
     setTimeout(() => {
       alertEl.classList.remove('show');
     }, 5000);
   }
 }
-
 function isValidEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
-
-// Add ripple effect to buttons with proper cleanup - DISABLED ON MOBILE
-if (!isMobileDevice() && !isLowPerformanceDevice()) {
+if (shouldUseDesktopEffects()) {
   document.querySelectorAll('.btn').forEach(button => {
     button.addEventListener('click', function(e) {
-      // Skip ripple on touch devices
       if (e.pointerType === 'touch') return;
-      
       const ripple = document.createElement('span');
       const rect = this.getBoundingClientRect();
       const size = Math.max(rect.width, rect.height);
       const x = e.clientX - rect.left - size / 2;
       const y = e.clientY - rect.top - size / 2;
-      
       ripple.style.width = ripple.style.height = size + 'px';
       ripple.style.left = x + 'px';
       ripple.style.top = y + 'px';
       ripple.classList.add('ripple');
-      
       this.appendChild(ripple);
-      
       const rippleTimeout = setTimeout(() => {
         ripple.parentNode === this && ripple.remove();
       }, 600);
-      
       // Cleanup on button removal
       ripple.addEventListener('transitionend', () => {
         clearTimeout(rippleTimeout);
@@ -388,11 +307,9 @@ if (!isMobileDevice() && !isLowPerformanceDevice()) {
     });
   });
 }
-
 // ============================================
 // ANALOG CLOCK WITH DATE
 // ============================================
-
 // Clock configuration constants
 const CLOCK_CONFIG = {
   FACE_RADIUS: 0.9,
@@ -423,9 +340,7 @@ const CLOCK_CONFIG = {
   SECOND_HAND_COLOR_DARK: 'rgba(217, 225, 197, 0.6)',
   SECOND_HAND_COLOR_LIGHT: 'rgba(139, 157, 111, 0.6)'
 };
-
 let clockUpdateInterval = null;
-
 function getClockColors() {
   const isLight = document.body.classList.contains('light-mode');
   return {
@@ -438,61 +353,48 @@ function getClockColors() {
     secondHand: isLight ? CLOCK_CONFIG.SECOND_HAND_COLOR_LIGHT : CLOCK_CONFIG.SECOND_HAND_COLOR_LIGHT
   };
 }
-
 function initializeClock() {
   const canvas = document.getElementById('clockCanvas');
   if (!canvas) return;
-  
   const ctx = canvas.getContext('2d');
   const radius = canvas.width / 2;
-  
   function drawClock() {
     // Clear canvas completely
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
     // Save context state
     ctx.save();
-    
     // Translate to center
     ctx.translate(radius, radius);
-    
     // Draw components
     drawFace(ctx, radius);
     drawNumbers(ctx, radius);
     drawTime(ctx, radius);
-    
     // Restore context state
     ctx.restore();
   }
-  
   function drawFace(ctx, radius) {
     const colors = getClockColors();
-    
     // Draw circle background
     ctx.beginPath();
     ctx.arc(0, 0, radius * CLOCK_CONFIG.FACE_RADIUS, 0, 2 * Math.PI);
     ctx.fillStyle = colors.faceBg;
     ctx.fill();
-    
     // Draw border
     ctx.strokeStyle = colors.border;
     ctx.lineWidth = 2;
     ctx.stroke();
-    
     // Draw center dot
     ctx.beginPath();
     ctx.arc(0, 0, radius * CLOCK_CONFIG.CENTER_DOT_RADIUS, 0, 2 * Math.PI);
     ctx.fillStyle = colors.centerDot;
     ctx.fill();
   }
-  
   function drawNumbers(ctx, radius) {
     const colors = getClockColors();
     ctx.font = Math.floor(radius * CLOCK_CONFIG.NUMBER_FONT_SIZE) + 'px Arial';
     ctx.fillStyle = colors.number;
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'center';
-    
     for (let num = 1; num <= 12; num++) {
       const ang = num * CLOCK_CONFIG.HOUR_ANGLE;
       ctx.save();
@@ -503,25 +405,20 @@ function initializeClock() {
       ctx.restore();
     }
   }
-  
   function drawTime(ctx, radius) {
     const colors = getClockColors();
     const now = new Date();
-    
     // Hour hand
     let hour = now.getHours() % 12;
     hour = (hour * CLOCK_CONFIG.HOUR_ANGLE) + (now.getMinutes() * CLOCK_CONFIG.HOUR_ANGLE / 60);
     drawHand(ctx, hour, radius * CLOCK_CONFIG.HOUR_HAND_LENGTH, CLOCK_CONFIG.HOUR_HAND_WIDTH, colors.hourHand);
-    
     // Minute hand
     let minute = (now.getMinutes() * CLOCK_CONFIG.MINUTE_ANGLE) + (now.getSeconds() * CLOCK_CONFIG.MINUTE_ANGLE / 60);
     drawHand(ctx, minute, radius * CLOCK_CONFIG.MINUTE_HAND_LENGTH, CLOCK_CONFIG.MINUTE_HAND_WIDTH, colors.minuteHand);
-    
     // Second hand
     let second = (now.getSeconds() * CLOCK_CONFIG.SECOND_ANGLE);
     drawHand(ctx, second, radius * CLOCK_CONFIG.SECOND_HAND_LENGTH, CLOCK_CONFIG.SECOND_HAND_WIDTH, colors.secondHand);
   }
-  
   function drawHand(ctx, ang, length, width, color) {
     ctx.beginPath();
     ctx.lineWidth = width;
@@ -531,7 +428,6 @@ function initializeClock() {
     ctx.lineTo(Math.sin(ang) * length, -Math.cos(ang) * length);
     ctx.stroke();
   }
-  
   // Update date display
   function updateDate() {
     const dateDisplay = document.getElementById('dateDisplay');
@@ -542,14 +438,11 @@ function initializeClock() {
       dateDisplay.textContent = dateString;
     }
   }
-  
   // Listen for theme changes - optimized without MutationObserver
   updateDate();
   drawClock();
-  
   // Track theme state to avoid unnecessary redraws
   let lastTheme = document.body.classList.contains('light-mode');
-  
   // Update clock every second and stop on page hidden or during zoom
   function startClockUpdate() {
     clockUpdateInterval = setInterval(() => {
@@ -557,7 +450,6 @@ function initializeClock() {
       if (document.hidden || isZooming) {
         return;
       }
-      
       // Check if theme changed and redraw
       const currentTheme = document.body.classList.contains('light-mode');
       if (currentTheme !== lastTheme) {
@@ -569,9 +461,7 @@ function initializeClock() {
       }
     }, 1000);
   }
-  
   startClockUpdate();
-  
   // Handle visibility changes
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
@@ -580,14 +470,12 @@ function initializeClock() {
       if (!isZooming) startClockUpdate();
     }
   });
-  
   // Pause clock update during zoom gesture
   document.addEventListener('touchstart', (e) => {
     if (e.touches.length === 2 && clockUpdateInterval) {
       clearInterval(clockUpdateInterval);
     }
   }, { passive: true });
-  
   document.addEventListener('touchend', (e) => {
     if (e.touches.length < 2 && !clockUpdateInterval && !document.hidden) {
       setTimeout(() => {
@@ -596,81 +484,66 @@ function initializeClock() {
     }
   }, { passive: true });
 }
-
 // Initialize clock when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeClock);
 } else {
   initializeClock();
 }
-
 // ============================================
 // TECH SLIDER FUNCTIONALITY
 // ============================================
-
 // Tech Slider
-let currentSlide = 0;
-const totalSlides = 3;
-
 const techSlider = document.getElementById('techSlider');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const dots = document.querySelectorAll('.dot');
-
-function updateSlider() {
-  if (techSlider) {
+if (techSlider) {
+  let currentSlide = 0;
+  const totalSlides = 3;
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const dots = document.querySelectorAll('.dot');
+  function updateSlider() {
     const translateX = -currentSlide * (100 / totalSlides);
     techSlider.style.transform = `translateX(${translateX}%)`;
+    // Update dots
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === currentSlide);
+    });
   }
-  
-  // Update dots
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateSlider();
+  }
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateSlider();
+  }
+  function goToSlide(slideIndex) {
+    currentSlide = slideIndex;
+    updateSlider();
+  }
+  // Event listeners
+  if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+  if (prevBtn) prevBtn.addEventListener('click', prevSlide);
   dots.forEach((dot, index) => {
-    dot.classList.toggle('active', index === currentSlide);
+    dot.addEventListener('click', () => goToSlide(index));
+  });
+  // Auto-slide every 5 seconds with visibility check
+  let sliderInterval = setInterval(() => {
+    if (!document.hidden) nextSlide();
+  }, 5000);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      clearInterval(sliderInterval);
+    } else {
+      sliderInterval = setInterval(() => {
+        if (!document.hidden) nextSlide();
+      }, 5000);
+    }
   });
 }
-
-function nextSlide() {
-  currentSlide = (currentSlide + 1) % totalSlides;
-  updateSlider();
-}
-
-function prevSlide() {
-  currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-  updateSlider();
-}
-
-function goToSlide(slideIndex) {
-  currentSlide = slideIndex;
-  updateSlider();
-}
-
-// Event listeners
-if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-
-dots.forEach((dot, index) => {
-  dot.addEventListener('click', () => goToSlide(index));
-});
-
-// Auto-slide every 5 seconds with visibility check
-let sliderInterval = setInterval(() => {
-  if (!document.hidden) nextSlide();
-}, 5000);
-
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    clearInterval(sliderInterval);
-  } else {
-    sliderInterval = setInterval(() => {
-      if (!document.hidden) nextSlide();
-    }, 5000);
-  }
-});
-
 // ============================================
 // SKILLS PROGRESS ANIMATION
 // ============================================
-
 function animateCounter(el, target, duration) {
   let start = 0;
   const step = (timestamp) => {
@@ -683,7 +556,6 @@ function animateCounter(el, target, duration) {
   };
   requestAnimationFrame(step);
 }
-
 const progressObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -692,7 +564,6 @@ const progressObserver = new IntersectionObserver((entries) => {
         const fill = item.querySelector('.progress-fill');
         const counterEl = item.querySelector('.progress-counter');
         const target = parseInt(fill.getAttribute('data-width'));
-
         // stagger each bar
         setTimeout(() => {
           item.classList.add('progress-item--active');
@@ -704,38 +575,29 @@ const progressObserver = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.3 });
-
 const progressSection = document.querySelector('.progress-grid');
 if (progressSection) {
   progressObserver.observe(progressSection);
 }
-
-
-
 // ============================================
 // MOBILE BOTTOM NAV
 // ============================================
-
 (function () {
   const bottomNav = document.getElementById('bottomNav');
   if (!bottomNav) return;
-
   // ── Active page highlight ──
   const page = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
   document.querySelectorAll('.bnav-item[data-page]').forEach(item => {
     if (item.dataset.page === page) item.classList.add('active');
   });
-
   // ── Theme toggle via bottom nav ──
   const bnavTheme = document.getElementById('bnavTheme');
   const bnavIcon  = document.getElementById('bnavThemeIcon');
-
   function syncBnavIcon() {
     if (!bnavIcon) return;
     bnavIcon.textContent = document.body.classList.contains('light-mode') ? 'dark_mode' : 'light_mode';
   }
   syncBnavIcon();
-
   if (bnavTheme) {
     bnavTheme.addEventListener('click', () => {
       document.body.classList.toggle('light-mode');
@@ -747,11 +609,9 @@ if (progressSection) {
       if (desktopIcon) desktopIcon.textContent = isLight ? 'dark_mode' : 'light_mode';
     });
   }
-
   // ── Hide on scroll down, show on scroll up ──
   let lastY = window.scrollY;
   let ticking = false;
-
   window.addEventListener('scroll', () => {
     if (!ticking) {
       requestAnimationFrame(() => {
@@ -768,3 +628,4 @@ if (progressSection) {
     }
   }, { passive: true });
 })();
+

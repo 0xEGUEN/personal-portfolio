@@ -1,11 +1,9 @@
 const React = window.React || {};
 const ReactDOM = window.ReactDOM || {};
 const anime = window.anime || {};
-
 if (!window.React || !window.ReactDOM || !window.anime) {
   console.error('Required browser libraries are missing.');
 }
-
 const { useEffect, useRef, useState } = React;
 const createElement = React.createElement || (() => null);
 const animate = anime.animate || (() => {});
@@ -17,7 +15,13 @@ const setElementStyles = utils.set || ((element, styles) => Object.assign(elemen
 const getElementStyle = utils.get || ((element, property) => getComputedStyle(element)[property]);
 const pickAccentColor = utils.randomPick || ((palette) => palette[Math.floor(Math.random() * palette.length)]);
 const paragraphColorCache = new WeakMap();
-
+const shouldUseCompactMotion = () => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
+  const coarsePointer = window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(any-pointer: coarse)').matches;
+  const noHover = window.matchMedia('(hover: none)').matches;
+  const lowMemory = navigator.deviceMemory && navigator.deviceMemory <= 4;
+  return coarsePointer || noHover || lowMemory;
+};
 const summaryStats = [
   {
     value: '2+ yrs',
@@ -32,7 +36,6 @@ const summaryStats = [
     label: 'Based in Central Java, Indonesia',
   },
 ];
-
 const chips = [
   'React',
   'Anime.js',
@@ -42,7 +45,6 @@ const chips = [
   'Python',
   'SQL',
 ];
-
 const focusModes = {
   build: {
     label: 'Build',
@@ -78,21 +80,17 @@ const focusModes = {
     ],
   },
 };
-
 const focusOrder = ['build', 'learn', 'ship'];
-
 function waitForLoadingScreen() {
   return new Promise((resolve) => {
     const loadingScreen = document.getElementById('loadingScreen');
     const finish = () => {
       window.setTimeout(resolve, 100);
     };
-
     if (!loadingScreen || loadingScreen.classList.contains('hidden')) {
       finish();
       return;
     }
-
     loadingScreen.addEventListener('transitionend', (event) => {
       if (event.propertyName === 'opacity' && loadingScreen.classList.contains('hidden')) {
         finish();
@@ -100,61 +98,58 @@ function waitForLoadingScreen() {
     }, { once: true });
   });
 }
-
 const motionReadyPromise = waitForLoadingScreen();
-
 function animateAboutParagraphs() {
   const paragraphs = document.querySelectorAll('.page-header .section-subtitle, .about-subtitle, .about-lead, .about-desc');
   if (!paragraphs.length) return;
-
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  paragraphs.forEach((paragraph) => {
+  paragraphs.forEach((paragraph, index) => {
     if (paragraph.dataset.aboutParagraphAnimated === 'true') return;
     paragraph.dataset.aboutParagraphAnimated = 'true';
-
     motionReadyPromise.then(() => {
+      if (shouldUseCompactMotion()) {
+        animate(paragraph, {
+          opacity: { from: 0 },
+          y: { from: '0.75em' },
+          duration: 650,
+          delay: index * 80,
+          ease: 'out(3)',
+        });
+        return;
+      }
       const runSplit = () => {
         const split = splitText(paragraph, {
           lines: true,
           words: true,
           chars: true,
         });
-
         split.addEffect(({ lines, words, chars }) => {
           lines.forEach((line) => {
             line.style.overflow = 'hidden';
             line.style.display = 'block';
           });
-
           words.forEach((word) => {
             word.style.display = 'inline-block';
             word.style.willChange = 'transform, opacity';
           });
-
           chars.forEach((char) => {
             char.style.display = 'inline-block';
             char.style.willChange = 'transform, opacity';
           });
-
           return animate(lines, {
-            y: ['50%', '-50%'],
-            loop: true,
-            alternate: true,
-            delay: stagger(400),
-            ease: 'inOutQuad',
+            opacity: { from: 0 },
+            y: { from: '0.875em' },
+            duration: 700,
+            delay: stagger(80),
+            ease: 'out(3)',
           });
         });
-
         split.addEffect((splitState) => {
           const colors = paragraphColorCache.get(paragraph) || [];
-
           splitState.words.forEach((word, index) => {
             const savedColor = colors[index];
             if (savedColor) {
               setElementStyles(word, { color: savedColor });
             }
-
             word.addEventListener('pointerenter', () => {
               animate(word, {
                 color: pickAccentColor(['#FF4B4B', '#FFCC2A', '#B7FF54', '#57F695']),
@@ -162,17 +157,14 @@ function animateAboutParagraphs() {
               });
             });
           });
-
           return () => {
             splitState.words.forEach((word, index) => {
               colors[index] = getElementStyle(word, 'color');
             });
-
             paragraphColorCache.set(paragraph, colors);
           };
         });
       };
-
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(runSplit).catch(runSplit);
       } else {
@@ -181,38 +173,47 @@ function animateAboutParagraphs() {
     });
   });
 }
-
 function animateAboutHeader() {
   const headerTitle = document.querySelector('.js-about-title');
   if (!headerTitle) return;
-
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (headerTitle.dataset.aboutAnimated === 'true') return;
   headerTitle.dataset.aboutAnimated = 'true';
-
   const runAnimation = () => {
+    if (shouldUseCompactMotion()) {
+      animate(headerTitle, {
+        opacity: { from: 0 },
+        y: { from: '0.35em' },
+        duration: 750,
+        ease: 'out(3)',
+      });
+      animate(document.querySelectorAll('.page-header .section-label'), {
+        opacity: { from: 0 },
+        y: { from: '0.75em' },
+        duration: 650,
+        delay: stagger(90),
+        ease: 'out(3)',
+      });
+      animateAboutParagraphs();
+      return;
+    }
     const split = splitText(headerTitle, {
       lines: true,
       words: true,
       chars: true,
     });
-
     split.addEffect(({ lines, words, chars }) => {
       lines.forEach((line) => {
         line.style.overflow = 'hidden';
         line.style.display = 'block';
       });
-
       words.forEach((word) => {
         word.style.display = 'inline-block';
         word.style.willChange = 'transform, opacity';
       });
-
       chars.forEach((char) => {
         char.style.display = 'inline-block';
         char.style.willChange = 'transform, opacity';
       });
-
       return animate([lines, words, chars], {
         opacity: { from: 0 },
         y: { from: '0.9em' },
@@ -223,18 +224,13 @@ function animateAboutHeader() {
         ease: 'out(4)',
       });
     });
-
     animate(document.querySelectorAll('.page-header .section-label'), {
       opacity: { from: 0 },
-      y: { from: 14 },
-      duration: 700,
-      delay: stagger(100),
+        y: { from: '0.875em' },
       ease: 'out(3)',
     });
-
     animateAboutParagraphs();
   };
-
   motionReadyPromise.then(() => {
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(runAnimation).catch(runAnimation);
@@ -243,7 +239,6 @@ function animateAboutHeader() {
     }
   });
 }
-
 function AboutSpotlight() {
   const rootRef = useRef(null);
   const focusPanelRef = useRef(null);
@@ -252,12 +247,10 @@ function AboutSpotlight() {
   const fxOrbThreeRef = useRef(null);
   const fxScanRef = useRef(null);
   const [activeFocus, setActiveFocus] = useState('build');
-
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
     motionReadyPromise.then(() => {
       const revealTargets = root.querySelectorAll('[data-reveal]');
       animate(revealTargets, {
@@ -267,7 +260,6 @@ function AboutSpotlight() {
         delay: stagger(120),
         ease: 'out(3)',
       });
-
       animate(root.querySelectorAll('.about-chip'), {
         opacity: { from: 0 },
         scale: { from: 0.92 },
@@ -277,12 +269,10 @@ function AboutSpotlight() {
       });
     });
   }, []);
-
   useEffect(() => {
     const panel = focusPanelRef.current;
     if (!panel) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
     motionReadyPromise.then(() => {
       animate(panel, {
         opacity: [0, 1],
@@ -292,16 +282,13 @@ function AboutSpotlight() {
       });
     });
   }, [activeFocus]);
-
   useEffect(() => {
     const fxOrbOne = fxOrbOneRef.current;
     const fxOrbTwo = fxOrbTwoRef.current;
     const fxOrbThree = fxOrbThreeRef.current;
     const fxScan = fxScanRef.current;
-
     if (!fxOrbOne && !fxOrbTwo && !fxOrbThree && !fxScan) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
+    if (shouldUseCompactMotion()) return;
     motionReadyPromise.then(() => {
       if (fxOrbOne) {
         animate(fxOrbOne, {
@@ -315,7 +302,6 @@ function AboutSpotlight() {
           ease: 'inOutSine',
         });
       }
-
       if (fxOrbTwo) {
         animate(fxOrbTwo, {
           x: [0, -24],
@@ -329,7 +315,6 @@ function AboutSpotlight() {
           ease: 'inOutSine',
         });
       }
-
       if (fxOrbThree) {
         animate(fxOrbThree, {
           x: [0, 18],
@@ -344,7 +329,6 @@ function AboutSpotlight() {
           ease: 'inOutSine',
         });
       }
-
       if (fxScan) {
         animate(fxScan, {
           left: ['-18%', '118%'],
@@ -357,9 +341,37 @@ function AboutSpotlight() {
       }
     });
   }, []);
-
+  useEffect(() => {
+    const buttons = rootRef.current?.querySelectorAll('.about-spotlight__switch-btn');
+    if (!buttons || buttons.length === 0) return;
+    buttons.forEach((btn) => {
+      const handleMouseEnter = () => {
+        if (!shouldUseCompactMotion()) {
+          animate(btn, {
+            scale: 1.05,
+            duration: 280,
+            ease: 'out(2)',
+          });
+        }
+      };
+      const handleMouseLeave = () => {
+        if (!shouldUseCompactMotion()) {
+          animate(btn, {
+            scale: btn.classList.contains('is-active') ? 1.08 : 1,
+            duration: 280,
+            ease: 'out(2)',
+          });
+        }
+      };
+      btn.addEventListener('mouseenter', handleMouseEnter);
+      btn.addEventListener('mouseleave', handleMouseLeave);
+      return () => {
+        btn.removeEventListener('mouseenter', handleMouseEnter);
+        btn.removeEventListener('mouseleave', handleMouseLeave);
+      };
+    });
+  }, [activeFocus]);
   const currentFocus = focusModes[activeFocus] || focusModes.build;
-
   return createElement(
     'section',
     {
@@ -507,12 +519,11 @@ function AboutSpotlight() {
     )
   );
 }
-
 animateAboutHeader();
-
 const aboutSpotlightRoot = document.getElementById('aboutSpotlightRoot');
 if (aboutSpotlightRoot && ReactDOM.createRoot) {
   ReactDOM.createRoot(aboutSpotlightRoot).render(createElement(AboutSpotlight));
 } else if (aboutSpotlightRoot && ReactDOM.render) {
   ReactDOM.render(createElement(AboutSpotlight), aboutSpotlightRoot);
 }
+
