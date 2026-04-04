@@ -31,11 +31,17 @@ const detectZoom = () => {
   if (!isMobileDevice()) return;
   isZooming = true;
   document.documentElement.classList.add('zoomed');
+  // Pause animations & effects during zoom
+  document.body.style.willChange = 'auto';
   clearTimeout(zoomTimeout);
   zoomTimeout = setTimeout(() => {
     isZooming = false;
     document.documentElement.classList.remove('zoomed');
-  }, 500);
+    // Resume animations
+    if (shouldUseDesktopEffects()) {
+      document.body.style.willChange = 'transform';
+    }
+  }, 800);
 };
 if (isMobileDevice()) {
   document.addEventListener('touchstart', (e) => {
@@ -111,12 +117,40 @@ document.addEventListener('visibilitychange', () => {
 });
 const cursor = document.getElementById('cursor');
 const cursorGlow = document.getElementById('cursor-glow');
-const shouldEnableCursorGlow = shouldUseDesktopEffects() && cursorGlow;
-if (shouldEnableCursorGlow) {
+const cursorTrackingSpeed = 0.15;
+
+// Disable custom cursor on mobile untuk better performance
+if (cursor && cursorGlow && !isMobileDevice()) {
   let mouseX = 0, mouseY = 0;
+  let cursorX = 0, cursorY = 0;
   let glowX = 0, glowY = 0;
   let glowAnimationId = null;
   let isPageVisible = true;
+  
+  // Trail particle effect
+  function createTrailParticle(x, y) {
+    const particle = document.createElement('div');
+    particle.style.position = 'fixed';
+    particle.style.width = '6px';
+    particle.style.height = '6px';
+    particle.style.borderRadius = '50%';
+    particle.style.background = 'rgba(108, 143, 255, 0.6)';
+    particle.style.pointerEvents = 'none';
+    particle.style.left = (x - 3) + 'px';
+    particle.style.top = (y - 3) + 'px';
+    particle.style.boxShadow = '0 0 12px rgba(108, 143, 255, 0.8)';
+    particle.style.zIndex = '9998';
+    particle.style.opacity = '1';
+    particle.style.transition = 'opacity 0.6s ease-out';
+    document.body.appendChild(particle);
+    
+    // Fade out
+    setTimeout(() => {
+      particle.style.opacity = '0';
+      setTimeout(() => particle.remove(), 600);
+    }, 100);
+  }
+  
   document.addEventListener('visibilitychange', () => {
     isPageVisible = !document.hidden;
     if (isPageVisible) {
@@ -125,51 +159,77 @@ if (shouldEnableCursorGlow) {
       cancelAnimationFrame(glowAnimationId);
     }
   });
-  document.addEventListener('mousemove', throttle((e) => {
+  
+  document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-  }, 16));
+    // Create trail setiap gerakan
+    if (Math.random() > 0.7) {
+      createTrailParticle(mouseX, mouseY);
+    }
+  });
+  
   function animateGlow() {
     if (!isPageVisible) return;
-    glowX += (mouseX - glowX) * 0.15;
-    glowY += (mouseY - glowY) * 0.15;
+    
+    // Update cursor position - sekarang langsung pakai mouseX/Y (transform handle centering)
+    cursorX = mouseX;
+    cursorY = mouseY;
+    
+    // Update glow position (smooth) - centered dengan transform
+    glowX += (mouseX - glowX) * cursorTrackingSpeed;
+    glowY += (mouseY - glowY) * cursorTrackingSpeed;
+    
+    if (cursor) {
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+    }
     if (cursorGlow) {
       cursorGlow.style.left = glowX + 'px';
       cursorGlow.style.top = glowY + 'px';
     }
+    
     glowAnimationId = requestAnimationFrame(animateGlow);
   }
+  
   function startGlowAnimation() {
     if (!glowAnimationId) {
       glowAnimationId = requestAnimationFrame(animateGlow);
     }
   }
-  startGlowAnimation();
+  
+  startGlowAnimation()
+  
   const interactiveElements = document.querySelectorAll('button, a, .btn, input, textarea, .contact-card, .blog-card, .gallery-item, .chip');
   interactiveElements.forEach(element => {
     element.addEventListener('mouseenter', () => {
-      if (cursorGlow) cursorGlow.style.width = '60px';
-      if (cursorGlow) cursorGlow.style.height = '60px';
-      if (cursorGlow) cursorGlow.style.borderColor = 'rgba(108, 143, 255, 0.7)';
+      if (cursorGlow) {
+        cursorGlow.style.width = '70px';
+        cursorGlow.style.height = '70px';
+        cursorGlow.style.borderColor = 'rgba(240, 192, 96, 0.8)';
+        cursorGlow.style.boxShadow = '0 0 30px rgba(240, 192, 96, 0.6)';
+      }
       element.style.transform = 'scale(1.02)';
     });
     element.addEventListener('mouseleave', () => {
-      if (cursorGlow) cursorGlow.style.width = '40px';
-      if (cursorGlow) cursorGlow.style.height = '40px';
-      if (cursorGlow) cursorGlow.style.borderColor = 'rgba(108, 143, 255, 0.5)';
+      if (cursorGlow) {
+        cursorGlow.style.width = '40px';
+        cursorGlow.style.height = '40px';
+        cursorGlow.style.borderColor = 'rgba(108, 143, 255, 0.5)';
+        cursorGlow.style.boxShadow = '0 0 20px rgba(108, 143, 255, 0.4)';
+      }
       element.style.transform = 'scale(1)';
     });
   });
+  
   document.addEventListener('mouseleave', () => {
     if (cursorGlow) cursorGlow.style.opacity = '0';
+    if (cursor) cursor.style.opacity = '0';
   });
   document.addEventListener('mouseenter', () => {
     if (cursorGlow) cursorGlow.style.opacity = '1';
+    if (cursor) cursor.style.opacity = '1';
   });
-} else {
-  if (cursorGlow) {
-    cursorGlow.style.display = 'none';
-  }
 }
 const navToggle = document.getElementById('nav-toggle');
 const navLinks = document.getElementById('nav-links');
@@ -628,4 +688,93 @@ if (progressSection) {
     }
   }, { passive: true });
 })();
+
+// ============================================
+// LOGO ANIMATIONS WITH ANIME.JS
+// ============================================
+// Pastikan Anime.js sudah di-load sebelum script ini dijalankan
+if (typeof anime !== 'undefined') {
+  const logoElement = document.querySelector('.logo.js');
+  const rotateButton = document.querySelector('button');
+  
+  if (logoElement) {
+    let rotations = 0;
+    
+    // Animasi bounce untuk logo dengan loop
+    anime({
+      targets: '.logo.js',
+      scale: [
+        { value: 1.25, duration: 200, easing: 'easeInOutQuad' },
+        { value: 1, duration: 300, easing: 'easeOutElastic(1, 0.7)' }
+      ],
+      loop: true,
+      loopDelay: 250
+    });
+    
+    // Implementasi drag untuk logo
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    
+    logoElement.style.cursor = 'grab';
+    logoElement.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      logoElement.style.cursor = 'grabbing';
+      const rect = logoElement.getBoundingClientRect();
+      dragOffsetX = e.clientX - rect.left;
+      dragOffsetY = e.clientY - rect.top;
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      currentX = e.clientX - dragOffsetX;
+      currentY = e.clientY - dragOffsetY;
+      
+      // Constrain movement ke viewport
+      const rect = logoElement.getBoundingClientRect();
+      const maxX = window.innerWidth - rect.width;
+      const maxY = window.innerHeight - rect.height;
+      
+      currentX = Math.max(0, Math.min(currentX, maxX));
+      currentY = Math.max(0, Math.min(currentY, maxY));
+      
+      logoElement.style.position = 'fixed';
+      logoElement.style.left = currentX + 'px';
+      logoElement.style.top = currentY + 'px';
+    });
+    
+    document.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      logoElement.style.cursor = 'grab';
+      
+      // Animate release dengan spring effect
+      anime({
+        targets: '.logo.js',
+        left: currentX,
+        top: currentY,
+        duration: 600,
+        easing: 'easeOutElastic(1, 0.7)'
+      });
+    });
+    
+    // Animasi rotasi saat tombol diklik
+    if (rotateButton) {
+      rotateButton.addEventListener('click', () => {
+        rotations++;
+        rotateButton.innerText = `rotations: ${rotations}`;
+        
+        anime({
+          targets: '.logo.js',
+          rotate: rotations * 360,
+          duration: 1500,
+          easing: 'easeOutQuart'
+        });
+      });
+    }
+  }
+}
 
