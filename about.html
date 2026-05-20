@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About — Adwa Fattur Rahman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inconsolata:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@400,0&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" href="css/style.css?v=20260405-8" />
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">
+                Loading<span class="loading-dots">
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <span class="icon material-symbols-outlined">light_mode</span>
+    </button>
+
+    <div class="page">
+        <!-- Header -->
+        <header class="navbar" id="navbar">
+            <div class="containerbar">
+                <a class="brand" href="index.html">
+                    <span class="logo-icon"><span class="material-symbols-outlined" style="font-size:18px">code</span></span>
+                    <span>Adwa Fattur Rahman</span>
+                </a>
+                <nav class="nav-links" id="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+                <div class="nav-right">
+                    <div class="lang-switcher" id="langSwitcher" data-no-translate="true">
+                        <button class="lang-switcher__btn" id="langSwitcherBtn" type="button" aria-label="Language menu" aria-haspopup="true" aria-expanded="false">
+                            <span class="material-symbols-outlined" style="font-size:18px">translate</span>
+                            <span class="lang-switcher__code" id="langSwitcherCurrent">EN</span>
+                            <span class="material-symbols-outlined" style="font-size:18px">expand_more</span>
+                        </button>
+                        <div class="lang-switcher__menu" id="langSwitcherMenu" role="menu" aria-label="Language menu">
+                            <button class="lang-switcher__option" type="button" data-lang="en" role="menuitem">English</button>
+                            <button class="lang-switcher__option" type="button" data-lang="id" role="menuitem">Bahasa Indonesia</button>
+                            <button class="lang-switcher__option" type="button" data-lang="de" role="menuitem">Deutsch</button>
+                        </div>
+                    </div>
+                    <a class="nav-cta" href="contact.html">Get In Touch</a>
+                    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Page Header -->
+            <section class="page-header">
+                <div class="page-header-fx" aria-hidden="true">
+                    <span class="page-header-fx__orb page-header-fx__orb--one"></span>
+                    <span class="page-header-fx__orb page-header-fx__orb--two"></span>
+                </div>
+                <div class="container">
+                    <span class="section-label">About</span>
+                    <h1 class="hero-title js-about-title">About Me</h1>
+                    <p class="section-subtitle" style="font-size: 1.2rem;">Full-stack developer, designer, and problem-solver with a passion for creating beautiful digital experiences.</p>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="section section--about">
+                <div class="container">
+                    <!-- Clock Widget -->
+                    <div class="clock-widget" style="margin-bottom: 60px;">
+                        <div class="clock-container">
+                            <canvas id="clockCanvas" width="120" height="120"></canvas>
+                        </div>
+                        <div class="date-display" id="dateDisplay">Mar 15, 2026</div>
+                    </div>
+
+                    <div id="aboutSpotlightRoot"></div>
+
+                    <div class="about-intro">
+                        <div class="about-img">
+                            <img src="assets/profil.jpg" alt="Profile Picture" loading="lazy">
+                            <div class="about-img-accent"></div>
+                        </div>
+                        <div>
+                            <h2 class="about-heading">I'm a Fresh Full-Stack Developer</h2>
+                            <p class="about-subtitle">Based in Semarang, Ungaran, Jawa Tengah with 2 years of hands-on coding experience</p>
+                            <p class="about-lead">Passionate about building clean, functional web applications. I love turning ideas into reality with modern technologies and clean code practices. Always eager to learn and improve my skills.</p>
+                            
+                            <div class="about-skills">
+                                <div class="skill-label">Tech Stack:</div>
+                                <div class="skill-item"><span class="skill-check">✓</span> JavaScript</div>
+                                <div class="skill-item"><span class="skill-check">✓</span> React</div>
+                                <div class="skill-item"><span class="skill-check">✓</span> Node.js</div>
+                                <div class="skill-item"><span class="skill-check">✓</span> CSS/SCSS</div>
+                                <div class="skill-item"><span class="skill-check">✓</span> Python</div>
+                                <div class="skill-item"><span class="skill-check">✓</span> SQL</div>
+                            </div>
+
+                            <p class="about-desc">I'm constantly learning new technologies and best practices. When I'm not coding, I'm exploring design trends, working on personal projects, and contributing to the dev community. I believe in continuous improvement and sharing knowledge.</p>
+                            
+                            <div class="about-actions">
+                                <a class="btn btn-primary" href="contact.html">Get In Touch</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Progress Section -->
+            <section class="section" id="skills">
+                <div class="container">
+                    <div style="margin-bottom: 48px;">
+                        <p class="section-label">Skills</p>
+                        <h2 class="section-title">Proficiency Level</h2>
+                        <p class="section-subtitle">A breakdown of my technical skill levels across different areas.</p>
+                    </div>
+                    <div class="progress-grid">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Frontend Development</span>
+                                <span class="progress-counter">85%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="85"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Backend Development</span>
+                                <span class="progress-counter">75%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="75"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>UI/UX Design</span>
+                                <span class="progress-counter">70%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="70"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span>Problem Solving</span>
+                                <span class="progress-counter">90%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="90"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Timeline -->
+            <section class="section section--smoke">
+                <div class="container">
+                    <div style="margin-bottom: 48px;">
+                        <p class="section-label">Journey</p>
+                        <h2 class="section-title">My Journey</h2>
+                    </div>
+                    
+                    <div class="htimeline">
+                        <div class="htimeline-item">
+                            <div class="ht-label">2018</div>
+                            <div class="ht-year">2018 - 2021</div>
+                            <div class="ht-title">SMPN 1 Ungaran</div>
+                            <div class="ht-desc">Completed middle school education at SMP Negeri 1 Ungaran.</div>
+                        </div>
+                        <div class="htimeline-item">
+                            <div class="ht-label">2021</div>
+                            <div class="ht-year">2021 - 2024</div>
+                            <div class="ht-title">SMAN 1 Ungaran</div>
+                            <div class="ht-desc">Continued studies at SMA Negeri 1 Ungaran.</div>
+                        </div>
+                        <div class="htimeline-item">
+                            <div class="ht-label">2024</div>
+                            <div class="ht-year">2024</div>
+                            <div class="ht-title">Started Coding Journey</div>
+                            <div class="ht-desc">Began learning web development with HTML, CSS, and JavaScript fundamentals.</div>
+                        </div>
+                        <div class="htimeline-item">
+                            <div class="ht-label">Mid 2024</div>
+                            <div class="ht-year">2024</div>
+                            <div class="ht-title">First Projects</div>
+                            <div class="ht-desc">Built first personal projects and learned React, modern CSS, and backend basics.</div>
+                        </div>
+                        <div class="htimeline-item">
+                            <div class="ht-label">2025</div>
+                            <div class="ht-year">2025</div>
+                            <div class="ht-title">Full Stack Development</div>
+                            <div class="ht-desc">Gained experience with Node.js, databases, and deployed several web applications.</div>
+                        </div>
+                        <div class="htimeline-item">
+                            <div class="ht-label">2026</div>
+                            <div class="ht-year">2026</div>
+                            <div class="ht-title">Current Journey</div>
+                            <div class="ht-desc">Building portfolio, seeking opportunities, and continuously expanding skill set.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-inner">
+                    <div>
+                        <div class="footer-brand">Adwa Fattur Rahman</div>
+                        <p class="footer-desc">Full-stack developer crafting digital experiences with clarity, minimal design, and reliable delivery.</p>
+                        <div class="footer-social">
+                            <a href="https://linkedin.com" aria-label="LinkedIn">Li</a>
+                            <a href="https://github.com" aria-label="GitHub">Gh</a>
+                            <a href="https://twitter.com" aria-label="Twitter">Tw</a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Pages</h4>
+                        <a href="index.html">Home</a>
+                        <a href="about.html">About</a>
+                        <a href="gallery.html">Gallery</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Services</h4>
+                        <a href="#">Web Development</a>
+                        <a href="#">API Development</a>
+                        <a href="#">Performance</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Contact</h4>
+                        <a href="mailto:adwarahmant@gmail.com">adwarahmant@gmail.com</a>
+                        <a href="tel:+62878622201312">0878-6220-1312</a>
+                        <a href="#">Semarang, Ungaran, Jawa Tengah</a>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <span>&copy; 2026 Adwa Fattur Rahman. All rights reserved.</span>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="Mobile navigation">
+        <a class="bnav-item" href="index.html" data-page="index">
+            <span class="material-symbols-outlined">home</span>
+            <span class="bnav-label">Home</span>
+        </a>
+        <a class="bnav-item" href="gallery.html" data-page="gallery">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="bnav-label">Gallery</span>
+        </a>
+        <a class="bnav-item" href="about.html" data-page="about">
+            <span class="material-symbols-outlined">person</span>
+            <span class="bnav-label">About</span>
+        </a>
+        <a class="bnav-item" href="contact.html" data-page="contact">
+            <span class="material-symbols-outlined">mail</span>
+            <span class="bnav-label">Contact</span>
+        </a>
+        <button class="bnav-item bnav-item--theme" id="bnavTheme" aria-label="Toggle theme">
+            <span class="material-symbols-outlined" id="bnavThemeIcon">light_mode</span>
+            <span class="bnav-label">Theme</span>
+        </button>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@4.1.4/lib/anime.umd.js"></script>
+    <script src="js/about-page.js?v=20260405-8"></script>
+    <script src="js/script.js?v=20260405-8"></script>
+    <script src="js/interactions-animation.js?v=20260405-8"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gallery — Adwa Fattur Rahman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inconsolata:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@400,0&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" href="css/style.css?v=20260405-8" />
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">
+                Loading<span class="loading-dots">
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <span class="icon material-symbols-outlined">light_mode</span>
+    </button>
+
+    <div class="page">
+        <!-- Header -->
+        <header class="navbar" id="navbar">
+            <div class="containerbar">
+                <a class="brand" href="index.html">
+                    <span class="logo-icon"><span class="material-symbols-outlined" style="font-size:18px">code</span></span>
+                    <span>Adwa Fattur Rahman</span>
+                </a>
+                <nav class="nav-links" id="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+                <div class="nav-right">
+                    <div class="lang-switcher" id="langSwitcher" data-no-translate="true">
+                        <button class="lang-switcher__btn" id="langSwitcherBtn" type="button" aria-label="Language menu" aria-haspopup="true" aria-expanded="false">
+                            <span class="material-symbols-outlined" style="font-size:18px">translate</span>
+                            <span class="lang-switcher__code" id="langSwitcherCurrent">EN</span>
+                            <span class="material-symbols-outlined" style="font-size:18px">expand_more</span>
+                        </button>
+                        <div class="lang-switcher__menu" id="langSwitcherMenu" role="menu" aria-label="Language menu">
+                            <button class="lang-switcher__option" type="button" data-lang="en" role="menuitem">English</button>
+                            <button class="lang-switcher__option" type="button" data-lang="id" role="menuitem">Bahasa Indonesia</button>
+                            <button class="lang-switcher__option" type="button" data-lang="de" role="menuitem">Deutsch</button>
+                        </div>
+                    </div>
+                    <a class="nav-cta" href="contact.html">Get In Touch</a>
+                    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Page Header -->
+            <section class="page-header">
+                <div class="container">
+                    <span class="section-label">Portfolio</span>
+                    <h1 class="hero-title" style="font-size: 3.5rem; margin: 20px 0;">My <span style="background: linear-gradient(135deg, #4a9eff, #d9e1c5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Projects</span></h1>
+                    <p class="section-subtitle" style="font-size: 1.2rem;">Explore a showcase of my recent projects, ranging from web apps to design systems and backend solutions.</p>
+                </div>
+            </section>
+
+            <!-- Gallery Section -->
+            <section class="section section--gallery">
+                <div class="container">
+                    <div class="gallery-grid">
+                        <!-- Discord Bot Project -->
+                        <div class="gallery-card">
+                            <div class="gallery-card-header">
+                                <div class="gallery-icon">
+                                    <span class="material-symbols-outlined">smart_toy</span>
+                                </div>
+                                <h3>Discord Bot</h3>
+                            </div>
+                            <div class="gallery-card-content">
+                                <p class="gallery-desc">Feature-rich Discord bot built with Python. Includes ping, hello, echo, info commands and more. Perfect for community management and automation.</p>
+                                <div class="gallery-tech">
+                                    <span class="tech-badge">Python</span>
+                                    <span class="tech-badge">Discord.py</span>
+                                    <span class="tech-badge">Bot</span>
+                                </div>
+                            </div>
+                            <div class="gallery-card-footer">
+                                <a href="https://github.com/0xEGUEN/discord-bot-isen" target="_blank" class="gallery-link">
+                                    <span>View on GitHub</span>
+                                    <span class="material-symbols-outlined">open_in_new</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Expense Manager Project -->
+                        <div class="gallery-card">
+                            <div class="gallery-card-header">
+                                <div class="gallery-icon">
+                                    <span class="material-symbols-outlined">savings</span>
+                                </div>
+                                <h3>Money Manager</h3>
+                            </div>
+                            <div class="gallery-card-content">
+                                <p class="gallery-desc">Smart expense tracking to control your spending optimally. Built with Vue 3 and Flutter for cross-platform support with modern UI/UX.</p>
+                                <div class="gallery-tech">
+                                    <span class="tech-badge">Vue 3</span>
+                                    <span class="tech-badge">Flutter</span>
+                                    <span class="tech-badge">TypeScript</span>
+                                    <span class="tech-badge">Finance</span>
+                                </div>
+                            </div>
+                            <div class="gallery-card-footer">
+                                <a href="https://github.com/0xEGUEN/aplikasi-manajer-duit-2-fix" target="_blank" class="gallery-link">
+                                    <span>View on GitHub</span>
+                                    <span class="material-symbols-outlined">open_in_new</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- WakaTime Project -->
+                        <div class="gallery-card">
+                            <div class="gallery-card-header">
+                                <div class="gallery-icon">
+                                    <span class="material-symbols-outlined">trending_up</span>
+                                </div>
+                                <h3>Coding Activity</h3>
+                            </div>
+                            <div class="gallery-card-content">
+                                <p class="gallery-desc">Live coding time and productivity metrics tracked across all projects.</p>
+                                <div class="wakatime-embed">
+                                    <img src="https://wakatime.com/badge/user/f52e4804-96f9-42c9-a5ea-5a278d6afcd1.svg" alt="WakaTime Badge" />
+                                </div>
+                                <div class="gallery-tech">
+                                    <span class="tech-badge">WakaTime</span>
+                                    <span class="tech-badge">Analytics</span>
+                                    <span class="tech-badge">Tracking</span>
+                                </div>
+                            </div>
+                            <div class="gallery-card-footer">
+                                <a href="https://wakatime.com/@f52e4804-96f9-42c9-a5ea-5a278d6afcd1" target="_blank" class="gallery-link">
+                                    <span>View Full Stats</span>
+                                    <span class="material-symbols-outlined">open_in_new</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-inner">
+                    <div>
+                        <div class="footer-brand">Adwa Fattur Rahman</div>
+                        <p class="footer-desc">Full-stack developer crafting digital experiences with clarity, minimal design, and reliable delivery.</p>
+                        <div class="footer-social">
+                            <a href="https://linkedin.com" aria-label="LinkedIn">Li</a>
+                            <a href="https://github.com" aria-label="GitHub">Gh</a>
+                            <a href="https://twitter.com" aria-label="Twitter">Tw</a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Pages</h4>
+                        <a href="index.html">Home</a>
+                        <a href="about.html">About</a>
+                        <a href="gallery.html">Gallery</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Services</h4>
+                        <a href="#">Web Development</a>
+                        <a href="#">API Development</a>
+                        <a href="#">Performance</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Contact</h4>
+                        <a href="mailto:adwarahmant@gmail.com">adwarahmant@gmail.com</a>
+                        <a href="tel:+62878622201312">0878-6220-1312</a>
+                        <a href="#">Semarang, Ungaran, Jawa Tengah</a>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <span>&copy; 2026 Adwa Fattur Rahman. All rights reserved.</span>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="Mobile navigation">
+        <a class="bnav-item" href="index.html" data-page="index">
+            <span class="material-symbols-outlined">home</span>
+            <span class="bnav-label">Home</span>
+        </a>
+        <a class="bnav-item" href="gallery.html" data-page="gallery">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="bnav-label">Gallery</span>
+        </a>
+        <a class="bnav-item" href="about.html" data-page="about">
+            <span class="material-symbols-outlined">person</span>
+            <span class="bnav-label">About</span>
+        </a>
+        <a class="bnav-item" href="contact.html" data-page="contact">
+            <span class="material-symbols-outlined">mail</span>
+            <span class="bnav-label">Contact</span>
+        </a>
+        <button class="bnav-item bnav-item--theme" id="bnavTheme" aria-label="Toggle theme">
+            <span class="material-symbols-outlined" id="bnavThemeIcon">light_mode</span>
+            <span class="bnav-label">Theme</span>
+        </button>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/animejs@4.1.4/lib/anime.umd.js"></script>
+    <script src="js/text-animation.js?v=20260405-8"></script>
+    <script src="js/script.js?v=20260405-8"></script>
+    <script src="js/interactions-animation.js?v=20260405-8"></script>
+</body>
+</html>

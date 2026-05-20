@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5, user-scalable=yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>Adwa Fattur Rahman</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inconsolata:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&family=DM+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@400,0&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" href="css/style.css?v=20260405-8" />
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">
+                Loading<span class="loading-dots">
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+        <span class="icon material-symbols-outlined">light_mode</span>
+    </button>
+
+    <div class="page">
+        <!-- Header -->
+        <header class="navbar" id="navbar">
+            <div class="containerbar">
+                <a class="brand" href="index.html">
+                    <span class="logo-icon"><span class="material-symbols-outlined" style="font-size:18px">code</span></span>
+                    <span>Adwa Fattur Rahman</span>
+                </a>
+                <nav class="nav-links" id="nav-links">
+                    <a href="index.html" class="active">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+                <div class="nav-right">
+                    <div class="lang-switcher" id="langSwitcher" data-no-translate="true">
+                        <button class="lang-switcher__btn" id="langSwitcherBtn" type="button" aria-label="Language menu" aria-haspopup="true" aria-expanded="false">
+                            <span class="material-symbols-outlined" style="font-size:18px">translate</span>
+                            <span class="lang-switcher__code" id="langSwitcherCurrent">EN</span>
+                            <span class="material-symbols-outlined" style="font-size:18px">expand_more</span>
+                        </button>
+                        <div class="lang-switcher__menu" id="langSwitcherMenu" role="menu" aria-label="Language menu">
+                            <button class="lang-switcher__option" type="button" data-lang="en" role="menuitem">English</button>
+                            <button class="lang-switcher__option" type="button" data-lang="id" role="menuitem">Bahasa Indonesia</button>
+                            <button class="lang-switcher__option" type="button" data-lang="de" role="menuitem">Deutsch</button>
+                        </div>
+                    </div>
+                    <a class="nav-cta" href="contact.html">Get In Touch</a>
+                    <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-fx" aria-hidden="true">
+                    <span class="hero-fx__orb hero-fx__orb--one"></span>
+                    <span class="hero-fx__orb hero-fx__orb--two"></span>
+                    <span class="hero-fx__grid"></span>
+                </div>
+                <div class="container hero-inner">
+                    <div class="hero-text">
+                        <p class="hero-label">Full-Stack Developer</p>
+                        <h1 class="hero-title js-hero-split">Building digital<br>experiences with<br><em>clarity & craft</em></h1>
+                        <p class="hero-desc">I'm a developer who blends clean code, minimal design, and reliable delivery to create products people enjoy using.</p>
+                        <div class="hero-actions">
+                            <a class="btn btn-primary" href="contact.html">Get In Touch</a>
+                            <a class="btn btn-outline" href="about.html">About Me</a>
+                        </div>
+                        <div class="hero-stat-single">
+                            <div class="num">2+</div>
+                            <div class="txt">Years of Coding</div>
+                        </div>
+                        <div style="margin-top: 60px;">
+                            <div class="clock-widget">
+                                <div class="clock-container">
+                                    <canvas id="clockCanvas" width="120" height="120"></canvas>
+                                </div>
+                                <div class="date-display" id="dateDisplay">Mar 21, 2026</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section class="section section--smoke" id="services">
+                <div class="container">
+                    <p class="section-label">Services</p>
+                    <h2 class="section-title">What I Do</h2>
+                    <p class="section-subtitle">I focus on full-stack development while exploring modern web technologies.</p>
+                    <div class="services-grid" style="margin-top:40px">
+                        <div class="service-card">
+                            <div class="icon"><span class="material-symbols-outlined">code_blocks</span></div>
+                            <h3>Web Development</h3>
+                            <p>Modern, responsive web apps with HTML, CSS, and JavaScript built on best practices.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="icon"><span class="material-symbols-outlined">trending_up</span></div>
+                            <h3>Performance</h3>
+                            <p>Fast, optimized applications that deliver great user experiences.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="icon"><span class="material-symbols-outlined">hub</span></div>
+                            <h3>API Development</h3>
+                            <p>Robust backend solutions and REST APIs with clean, maintainable code.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section class="section" id="skills">
+                <div class="container">
+                    <div style="margin-bottom: 48px;">
+                        <p class="section-label">Skills</p>
+                        <h2 class="section-title">My Expertise</h2>
+                        <p class="section-subtitle">Technologies and tools I work with to build amazing digital products.</p>
+                    </div>
+
+                    <!-- Tech Stack Slider -->
+                    <div class="tech-slider-container">
+                        <div class="tech-slider" id="techSlider">
+                            <div class="tech-slide">
+                                <div class="tech-category-header">
+                                    <h3>Frontend Development</h3>
+                                    <p>Building beautiful and responsive user interfaces</p>
+                                </div>
+                                <div class="tech-logos">
+                                    <div class="tech-logo"><div class="tech-icon html">HTML5</div><span>HTML5</span></div>
+                                    <div class="tech-logo"><div class="tech-icon css">CSS3</div><span>CSS3</span></div>
+                                    <div class="tech-logo"><div class="tech-icon js">JS</div><span>JavaScript</span></div>
+                                    <div class="tech-logo"><div class="tech-icon react">⚛</div><span>React</span></div>
+                                    <div class="tech-logo"><div class="tech-icon sass">SASS</div><span>Sass</span></div>
+                                </div>
+                            </div>
+                            <div class="tech-slide">
+                                <div class="tech-category-header">
+                                    <h3>Backend Development</h3>
+                                    <p>Server-side development and API creation</p>
+                                </div>
+                                <div class="tech-logos">
+                                    <div class="tech-logo"><div class="tech-icon nodejs">NODE</div><span>Node.js</span></div>
+                                    <div class="tech-logo"><div class="tech-icon python">PY</div><span>Python</span></div>
+                                    <div class="tech-logo"><div class="tech-icon express">EX</div><span>Express</span></div>
+                                    <div class="tech-logo"><div class="tech-icon mongodb">DB</div><span>MongoDB</span></div>
+                                    <div class="tech-logo"><div class="tech-icon sql">SQL</div><span>MySQL</span></div>
+                                </div>
+                            </div>
+                            <div class="tech-slide">
+                                <div class="tech-category-header">
+                                    <h3>Tools & Design</h3>
+                                    <p>Development tools and design software</p>
+                                </div>
+                                <div class="tech-logos">
+                                    <div class="tech-logo"><div class="tech-icon git">GIT</div><span>Git</span></div>
+                                    <div class="tech-logo"><div class="tech-icon vscode">VS</div><span>VS Code</span></div>
+                                    <div class="tech-logo"><div class="tech-icon figma">FIG</div><span>Figma</span></div>
+                                    <div class="tech-logo"><div class="tech-icon docker">🐳</div><span>Docker</span></div>
+                                    <div class="tech-logo"><div class="tech-icon aws">AWS</div><span>AWS</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slider-nav">
+                            <button class="slider-btn prev" id="prevBtn">
+                                <span class="material-symbols-outlined">chevron_left</span>
+                            </button>
+                            <div class="slider-dots" id="sliderDots">
+                                <span class="dot active" data-slide="0"></span>
+                                <span class="dot" data-slide="1"></span>
+                                <span class="dot" data-slide="2"></span>
+                            </div>
+                            <button class="slider-btn next" id="nextBtn">
+                                <span class="material-symbols-outlined">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Banner -->
+            <section class="cta-banner">
+                <div class="container">
+                    <h2 class="section-title">Ready to start a project?</h2>
+                    <p class="section-subtitle">Let's collaborate on your next idea. I'm always open to interesting projects.</p>
+                    <a class="btn btn-sage" href="contact.html">Contact Me</a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-inner">
+                    <div>
+                        <div class="footer-brand">Adwa Fattur Rahman</div>
+                        <p class="footer-desc">Full-stack developer crafting digital experiences with clarity, minimal design, and reliable delivery.</p>
+                        <div class="footer-social">
+                            <a href="https://linkedin.com" aria-label="LinkedIn">Li</a>
+                            <a href="https://github.com" aria-label="GitHub">Gh</a>
+                            <a href="https://twitter.com" aria-label="Twitter">Tw</a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Pages</h4>
+                        <a href="index.html">Home</a>
+                        <a href="about.html">About</a>
+                        <a href="gallery.html">Gallery</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Services</h4>
+                        <a href="#">Web Development</a>
+                        <a href="#">API Development</a>
+                        <a href="#">Performance</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Contact</h4>
+                        <a href="mailto:adwarahmant@gmail.com">adwarahmant@gmail.com</a>
+                        <a href="tel:+62878622201312">0878-6220-1312</a>
+                        <a href="#">Semarang, Ungaran, Jawa Tengah</a>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <span>&copy; 2026 Adwa Fattur Rahman. All rights reserved.</span>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-glow" id="cursor-glow"></div>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="Mobile navigation">
+        <a class="bnav-item" href="index.html" data-page="index">
+            <span class="material-symbols-outlined">home</span>
+            <span class="bnav-label">Home</span>
+        </a>
+        <a class="bnav-item" href="gallery.html" data-page="gallery">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="bnav-label">Gallery</span>
+        </a>
+        <a class="bnav-item" href="about.html" data-page="about">
+            <span class="material-symbols-outlined">person</span>
+            <span class="bnav-label">About</span>
+        </a>
+        <a class="bnav-item" href="contact.html" data-page="contact">
+            <span class="material-symbols-outlined">mail</span>
+            <span class="bnav-label">Contact</span>
+        </a>
+        <button class="bnav-item bnav-item--theme" id="bnavTheme" aria-label="Toggle theme">
+            <span class="material-symbols-outlined" id="bnavThemeIcon">light_mode</span>
+            <span class="bnav-label">Theme</span>
+        </button>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/animejs@4.1.4/lib/anime.umd.js"></script>
+    <script src="js/text-animation.js?v=20260405-8"></script>
+    <script src="js/script.js?v=20260405-8"></script>
+    <script src="js/interactions-animation.js?v=20260405-8"></script>
+</body>
+</html>

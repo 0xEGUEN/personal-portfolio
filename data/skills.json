@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "name": "HTML",
+    "category": "Frontend",
+    "level": 95,
+    "icon": "code"
+  },
+  {
+    "id": 2,
+    "name": "CSS",
+    "category": "Frontend",
+    "level": 90,
+    "icon": "palette"
+  },
+  {
+    "id": 3,
+    "name": "JavaScript",
+    "category": "Frontend",
+    "level": 88,
+    "icon": "code_blocks"
+  },
+  {
+    "id": 4,
+    "name": "React",
+    "category": "Frontend",
+    "level": 85,
+    "icon": "rocket_launch"
+  },
+  {
+    "id": 5,
+    "name": "Vue.js",
+    "category": "Frontend",
+    "level": 80,
+    "icon": "rocket_launch"
+  },
+  {
+    "id": 6,
+    "name": "Node.js",
+    "category": "Backend",
+    "level": 87,
+    "icon": "storage"
+  },
+  {
+    "id": 7,
+    "name": "Express.js",
+    "category": "Backend",
+    "level": 85,
+    "icon": "storage"
+  },
+  {
+    "id": 8,
+    "name": "MongoDB",
+    "category": "Database",
+    "level": 83,
+    "icon": "database"
+  },
+  {
+    "id": 9,
+    "name": "PostgreSQL",
+    "category": "Database",
+    "level": 82,
+    "icon": "database"
+  },
+  {
+    "id": 10,
+    "name": "Git",
+    "category": "Tools",
+    "level": 92,
+    "icon": "terminal"
+  },
+  {
+    "id": 11,
+    "name": "Figma",
+    "category": "Design",
+    "level": 78,
+    "icon": "palette"
+  },
+  {
+    "id": 12,
+    "name": "Docker",
+    "category": "DevOps",
+    "level": 75,
+    "icon": "storage"
+  }
+]

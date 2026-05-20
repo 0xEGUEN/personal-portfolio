@@ -1,0 +1,10 @@
+# Kiro IDE files (private)
+.kiro/
+.hotplate/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
